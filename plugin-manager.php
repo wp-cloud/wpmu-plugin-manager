@@ -34,6 +34,7 @@ class PluginManager {
 		add_filter( 'plugin_action_links', array( &$this, 'action_links' ), 10, 4 );
 		add_filter( 'active_plugins', array( &$this, 'check_activated' ) );
 		add_action( 'admin_notices', array( &$this, 'supporter_message' ) );
+		add_action( 'plugins_loaded', array( &$this, 'localization' ) );
 		
 		//individual blog options
 		add_action( 'wpmueditblogaction', array( &$this, 'blog_options_form' ) );
@@ -47,24 +48,12 @@ class PluginManager {
 		$this->__construct();
 	}
 	
+	function localization() {
+		load_plugin_textdomain('pm', false, '/multisite-plugin-manager/languages/');
+	}
+	
 	function add_menu() {
 		add_submenu_page( 'plugins.php', __('Plugin Management', 'pm'), __('Plugin Management', 'pm'), 'manage_network_options', 'plugin-management', array( &$this, 'admin_page' ) );
-	}
-
-	//removes the meta information for normal admins
-	function remove_plugin_meta($plugin_meta, $plugin_file) {
-	  if ( is_super_admin() ) {
-			return $plugin_meta;
-		} else {
-    	remove_all_actions("after_plugin_row_$plugin_file");
-		  return array();
-		}
-	}
-
-  function remove_plugin_update_row() {
-	  if ( !is_super_admin() ) {
-    	remove_all_actions('after_plugin_row');
-		}
 	}
 
 	function admin_page() {
@@ -199,7 +188,22 @@ class PluginManager {
 		<?php
 	} //end admin_page()
 
+	//removes the meta information for normal admins
+	function remove_plugin_meta($plugin_meta, $plugin_file) {
+	  if ( is_super_admin() ) {
+			return $plugin_meta;
+		} else {
+    	remove_all_actions("after_plugin_row_$plugin_file");
+		  return array();
+		}
+	}
 
+  function remove_plugin_update_row() {
+	  if ( !is_super_admin() ) {
+    	remove_all_actions('after_plugin_row');
+		}
+	}
+	
 	function process_form() {
 
 		if (isset($_GET['mass_activate'])) {
