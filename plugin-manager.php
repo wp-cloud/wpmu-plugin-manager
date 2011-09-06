@@ -3,7 +3,7 @@
 Plugin Name: Multisite Plugin Manager
 Plugin URI: http://wordpress.org/extend/plugins/multisite-plugin-manager/
 Description: The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
-Version: 3.0
+Version: 3.1
 Author: Aaron Edwards
 Author URI: http://uglyrobot.com
 Network: true
@@ -35,11 +35,11 @@ class PluginManager {
 		add_filter( 'active_plugins', array( &$this, 'check_activated' ) );
 		add_action( 'admin_notices', array( &$this, 'supporter_message' ) );
 		add_action( 'plugins_loaded', array( &$this, 'localization' ) );
-		
+
 		//individual blog options
 		add_action( 'wpmueditblogaction', array( &$this, 'blog_options_form' ) );
 		add_action( 'wpmu_update_blog_options', array( &$this, 'blog_options_form_process' ) );
-		
+
 		add_filter( 'plugin_row_meta' , array( &$this, 'remove_plugin_meta' ), 10, 2 );
 		add_action( 'admin_init', array( &$this, 'remove_plugin_update_row' ) );
 	}
@@ -47,11 +47,11 @@ class PluginManager {
 	function PluginManager() {
 		$this->__construct();
 	}
-	
+
 	function localization() {
 		load_plugin_textdomain('pm', false, '/multisite-plugin-manager/languages/');
 	}
-	
+
 	function add_menu() {
 		add_submenu_page( 'plugins.php', __('Plugin Management', 'pm'), __('Plugin Management', 'pm'), 'manage_network_options', 'plugin-management', array( &$this, 'admin_page' ) );
 	}
@@ -60,7 +60,7 @@ class PluginManager {
 
 		if (!is_site_admin())
 			die('Nice Try!');
-			
+
 		$this->process_form();
 		?>
 		<div class='wrap'>
@@ -126,7 +126,7 @@ class PluginManager {
 		$user_control = (array)get_site_option('pm_user_control_list');
 		$supporter_control = (array)get_site_option('pm_supporter_control_list');
 		foreach ( $plugins as $file => $p ) {
-		
+
 		  //skip network plugins or network activated plugins
 		  if ( is_network_only_plugin( $file ) || is_plugin_active_for_network( $file ) )
 		    continue;
@@ -203,7 +203,7 @@ class PluginManager {
     	remove_all_actions('after_plugin_row');
 		}
 	}
-	
+
 	function process_form() {
 
 		if (isset($_GET['mass_activate'])) {
@@ -267,7 +267,7 @@ class PluginManager {
 		</thead>
 	  <?php
 	  foreach ( $plugins as $file => $p ) {
-	  
+
 	  	//skip network plugins or network activated plugins
 		  if ( is_network_only_plugin( $file ) || is_plugin_active_for_network( $file ) )
 		    continue;
@@ -304,9 +304,9 @@ class PluginManager {
 	//activate on new blog
 	function new_blog($blog_id) {
 	  require_once( ABSPATH.'wp-admin/includes/plugin.php' );
-	  
+
 		$auto_activate = (array)get_site_option('pm_auto_activate_list');
-		if (count($supporter_control_auto)) {
+		if (count($auto_activate)) {
 	  	switch_to_blog($blog_id);
 	    activate_plugins($auto_activate, '', false); //silently activate any plugins
 	    restore_current_blog();
@@ -316,7 +316,7 @@ class PluginManager {
 	function mass_activate($plugin) {
 		global $wpdb;
     set_time_limit(120);
-		
+
 		$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0");
 		if ($blogs)	{
 		  foreach($blogs as $blog_id)	{
@@ -399,7 +399,7 @@ class PluginManager {
 	//show supporter message if plugin exists
 	function supporter_message() {
 		global $pagenow;
-		
+
 	  if (is_super_admin()) //don't filter siteadmin
 	    return; //
 

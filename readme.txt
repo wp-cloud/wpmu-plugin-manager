@@ -3,7 +3,7 @@ Contributors: uglyrobot
 Tags: multisite, wpmu, plugins
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W66QWST9B9KRN
 Requires at least: 3.1
-Tested up to: 3.1
+Tested up to: 3.2.1
 Stable tag: trunk
 
 The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
@@ -58,6 +58,9 @@ Not at all, but if you install the <a href="http://premium.wpmudev.org/project/s
 2. Overriding allowed plugins per site
 
 == Changelog ==
+
+= 3.1 =
+* Fix auto-activate for new blogs
 
 = 3.0 =
 * Complete rewrite for WP 3.1
