@@ -3,12 +3,12 @@
 Plugin Name: Multisite Plugin Manager
 Plugin URI: http://wordpress.org/extend/plugins/multisite-plugin-manager/
 Description: The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
-Version: 3.1
+Version: 3.1.1
 Author: Aaron Edwards
 Author URI: http://uglyrobot.com
 Network: true
 
-Copyright 2009-2011 UglyRobot Web Development (http://uglyrobot.com)
+Copyright 2009-2012 UglyRobot Web Development (http://uglyrobot.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License (Version 2 - GPLv2) as published by
@@ -71,15 +71,11 @@ class PluginManager {
 		<div id="message" class="updated fade"><p><?php _e('Settings Saved', 'pm'); ?></p></div>
 		<?php }
 
-	  if ( !function_exists('is_supporter') ) {
-	    echo '<p style="border:1px gray solid;margin:10px;padding:10px;">If you want to limit certain plugins to paid Supporters only, you must have the <a href="http://premium.wpmudev.org/project/supporter?ref=prayhumbly-3442">WPMU DEV Premium</a> Supporter plugin installed.
-	    <a href="http://premium.wpmudev.org/?ref=prayhumbly-3442"><img src="http://premium.wpmudev.org/banners/180x60-banner.png" alt="180x60-banner.png" title="Check Out WPMU DEV Premium" /></a></p>';
-	  }
 		?>
 		<div class="donate-message" style="border:1px gray solid;margin:10px;padding:10px;">
 			<table>
 			 <tr>
-		     <td><?php if ( function_exists('is_supporter')) { echo "You are making money with this plugin. ";} ?>Why not send me a small donation in honor of the time I put into this? Thanks!</td>
+		     <td><?php echo "You are probably making money with this plugin. "; ?>Why not send me a small donation in honor of the time I put into this? Thanks!</td>
 		     <td>
 	        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 					<input type="hidden" name="cmd" value="_s-xclick">
@@ -89,18 +85,14 @@ class PluginManager {
 					</form>
 		     </td>
 		   </tr>
-		   <tr>
-		     <td>I provide support and answer feature requests for this plugin exclusively through the forums at <a href="http://premium.wpmudev.org/?ref=prayhumbly-3442">WPMU DEV Premium</a>. If you are not a member, signup using this button and you can post your questions there.</td>
-		     <td><a href='http://premium.wpmudev.org/?ref=prayhumbly-3442'><img src='http://premium.wpmudev.org/banners/180x60-banner.png' alt='180x60-banner.png' title='Check Out WPMU DEV Premium' /></a></td>
-		   </tr>
 		  </table>
 		</div>
 		<h3><?php _e('Help', 'pm'); ?></h3>
 		<p><strong><?php _e('Auto Activation', 'pm'); ?></strong><br/>
 		<?php _e('When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'pm'); ?></p>
 		<p><strong><?php _e('User Control', 'pm'); ?></strong><br/>
-		<?php if ( function_exists('is_supporter') ) { ?>
-		<?php _e('Choose if all users, supporters only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'pm'); ?>
+		<?php if ( function_exists('is_pro_site') ) { ?>
+		<?php _e('Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'pm'); ?>
 		<?php } else { ?>
 		<?php _e('When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'pm'); ?>
 		<?php } ?>
@@ -165,8 +157,8 @@ class PluginManager {
 		 			}
 
 		 			$opts = '<option value="none"'.$n_opt.'>' . __('None', 'pm') . '</option>'."\n";
-					if ( function_exists('is_supporter'))
-						$opts .= '<option value="supporters"'.$s_opt.'>' . __('Supporters', 'pm') . '</option>'."\n";
+					if ( function_exists('is_pro_site'))
+						$opts .= '<option value="supporters"'.$s_opt.'>' . __('Pro Sites', 'pm') . '</option>'."\n";
 					$opts .= '<option value="all"'.$a_opt.'>' . __('All Users', 'pm') . '</option>'."\n";
 					$opts .= '<option value="auto"'.$auto_opt.'>' . __('Auto-Activate (All Users)', 'pm') . '</option>'."\n";
 
@@ -370,7 +362,8 @@ class PluginManager {
 
 	//plugin activate links
 	function action_links($action_links, $plugin_file, $plugin_data, $context) {
-
+		global $psts, $blog_id;
+		
 	  if (is_super_admin()) //don't filter siteadmin
 	    return $action_links;
 
@@ -383,12 +376,12 @@ class PluginManager {
 	    if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $override_plugins)) {
 	      return $action_links;
 	    } else if (in_array($plugin_file, $supporter_control)) {
-	      if ( function_exists('is_supporter') ) {
-	        if (is_supporter()) {
+	      if ( function_exists('is_pro_site') ) {
+	        if (is_pro_site()) {
 	          return $action_links;
 	        } else {
 	          add_action( "after_plugin_row_$plugin_file", array( &$this, 'remove_checks' ) ); //add action to disable row's checkbox
-	          return array('<a style="color:red;" href="./supporter.php">Supporters Only</a>');
+	          return array('<a style="color:red;" href="'.$psts->checkout_url($blog_id).'">Pro Sites Only</a>');
 	        }
 	      }
 	    }
@@ -403,11 +396,11 @@ class PluginManager {
 	  if (is_super_admin()) //don't filter siteadmin
 	    return; //
 
-	  if ( function_exists('is_supporter') && $pagenow == 'plugins.php') {
-	    if ( !is_supporter() ) {
-	   		echo '<div class="error fade"><p style="font-weight:bold;padding:10px;">Premium plugins are only available to '.get_site_option('site_name').' Supporters. <a title="Become a Supporter" href="./supporter.php">Why not become a Supporter today?</a></p></div>';
-	  	} else {
-	      echo '<div class="error" style="background-color:#F9F9F9;border:0;font-weight:bold;"><p>As a '.get_site_option('site_name')." Supporter, you now have access to all our premium plugins!</p></div>";
+	  if ( function_exists('is_pro_site') && $pagenow == 'plugins.php') {
+	    if ( !is_pro_site() ) {
+	   		supporter_feature_notice();
+			} else {
+	      echo '<div class="error" style="background-color:#F9F9F9;border:0;font-weight:bold;"><p>As a '.get_site_option('site_name')." Pro Site, you now have access to all our premium plugins!</p></div>";
 	    }
 		}
 
@@ -449,8 +442,8 @@ class PluginManager {
 	    }
 	  }
 
-	  if ( function_exists('is_supporter') ) {
-	    if (count($supporter_control) && !is_supporter()) {
+	  if ( function_exists('is_pro_site') ) {
+	    if (count($supporter_control) && !is_pro_site()) {
 	      deactivate_plugins($supporter_control, true); //silently remove any plugins
 	      foreach ($supporter_control as $plugin_file)
 	        unset($active_plugins[$plugin_file]);
