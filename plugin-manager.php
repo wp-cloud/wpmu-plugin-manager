@@ -3,7 +3,7 @@
 Plugin Name: Multisite Plugin Manager
 Plugin URI: http://wordpress.org/extend/plugins/multisite-plugin-manager/
 Description: The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
-Version: 3.1.1
+Version: 3.1.2
 Author: Aaron Edwards
 Author URI: http://uglyrobot.com
 Network: true
@@ -316,7 +316,7 @@ class PluginManager {
 		    activate_plugin($plugin); //silently activate the plugin
 		    restore_current_blog();
 			}
-			?><div id="message" class="updated fade"><p><span style="color:#FF3300;"><?php echo $plugin; ?></span><?php _e(' has been MASS ACTIVATED.', 'pm'); ?></p></div><?php
+			?><div id="message" class="updated fade"><p><span style="color:#FF3300;"><?php echo esc_html($plugin); ?></span><?php _e(' has been MASS ACTIVATED.', 'pm'); ?></p></div><?php
   	} else {
       ?><div class="error"><p><?php _e('Failed to mass activate: error selecting blogs', 'pm'); ?></p></div><?php
 		}
@@ -333,7 +333,7 @@ class PluginManager {
 		    deactivate_plugins($plugin, true); //silently deactivate the plugin
 		    restore_current_blog();
 			}
-			?><div id="message" class="updated fade"><p><span style="color:#FF3300;"><?php echo $plugin; ?></span><?php _e(' has been MASS DEACTIVATED.', 'pm'); ?></p></div><?php
+			?><div id="message" class="updated fade"><p><span style="color:#FF3300;"><?php echo esc_html($plugin); ?></span><?php _e(' has been MASS DEACTIVATED.', 'pm'); ?></p></div><?php
 		} else {
       ?><div class="error"><p><?php _e('Failed to mass deactivate: error selecting blogs', 'pm'); ?></p></div><?php
 		}
@@ -409,7 +409,7 @@ class PluginManager {
 
 	//use jquery to remove associated checkboxes to prevent mass activation (usability, not security)
 	function remove_checks($plugin_file) {
-	  echo '<script type="text/javascript">jQuery("input:checkbox[value=\''.attribute_escape($plugin_file).'\']).remove();</script>';
+	  echo '<script type="text/javascript">jQuery("input:checkbox[value=\''.esc_js($plugin_file).'\']).remove();</script>';
 	}
 
 	/*
