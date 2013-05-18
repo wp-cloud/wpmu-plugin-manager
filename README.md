@@ -1,4 +1,4 @@
-# Multisite Plugin Manager
+# Multisite Plugin Manager [![Build Status](https://travis-ci.org/wp-repository/multisite-plugin-manager.png?branch=master)](https://travis-ci.org/wp-repository/multisite-plugin-manager)
 __Manage plugin permissions in a WordPress MU installation__
 
 ## Details
