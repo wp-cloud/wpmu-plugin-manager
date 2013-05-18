@@ -61,7 +61,10 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 
 
 ## Changelog
-
+* __3.3__ (future release)
+	* added build testing via travis-ci.org
+	* added custom unit tests @TODO
+	* TBD
 * __3.2__
 	* __Forked (dirty) from [Multisite Plugin Manager](http://wordpress.org/extend/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)__
 	* added translation support
