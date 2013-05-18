@@ -2,8 +2,8 @@
 /*
 Plugin Name: Multisite Plugin Manager
 Plugin URI: http://wordpress.org/extend/plugins/multisite-plugin-manager/
-Description: The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
-Version: 3.1.3
+Description: Manage plugin access permissions across your entire multisite network.
+Version: 3.2
 Author: Aaron Edwards
 Author URI: http://uglyrobot.com
 License: GPLv2
@@ -102,43 +102,17 @@ class PluginManager {
 		<style>.tab-about li { list-style: none; }</style>
 		<h1><?php _e( 'Multisite Plugin Manager', 'multisite-plugin-manager'); ?></h1>
 		<p>
-			<a href="http://wordpress.org/extend/plugins/multisite-plugin-manager/" target="_blank">WordPress.org</a> | 
-			<a href="http://wordpress.org/support/plugin/multisite-plugin-manager/" target="_blank">Support</a> |
-			<a href="http://uglyrobot.com/" target="_blank">UglyRobot</a>
+			<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">Homepage</a> | 
+			<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Support</a>
 		</p>
 		<ul class="tab-about">
-			<li><b><?php _e( 'Development', 'multisite-plugin-manager'); ?>:</b>
-				<ul>
-					<li><a href="http://www.scompt.com/" target="_blank">Edward Dale</a> | <a href="https://github.com/scompt/" target="_blank">scompt@GitHub</a> | <a href="http://profiles.wordpress.org/scompt/" target="_blank">scompt@WP.org</a></li>
-					<li><a href="http://lud.icro.us/" target="_blank">John Blackbourn</a> | <a href="https://github.com/johnbillion/" target="_blank">johnbillion@GitHub</a> | <a href="http://profiles.wordpress.org/johnbillion/" target="_blank">johnbillion@WP.org</a></li>
-				</ul>
+			<li><b><?php _e( 'Development', 'multisite-plugin-manager'); ?>: </b>
+				<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">GitHub repo</a> |
+				<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Issues</a> |
+				by <a href="http://labs.foe-services.de" target="_blank">Foe Services Labs</a> 
 			</li>
-			<li><b><?php _e( 'WordPress', 'multisite-plugin-manager'); ?>:</b>
-				<ul>
-					<li><?php printf( __( 'Requires at least: %s', 'multisite-plugin-manager'), '3.1'); ?></li>
-					<li><?php printf( __( 'Tested up to: %s', 'multisite-plugin-manager'), '3.5.1'); ?></li>
-				</ul>
-			</li>
-			<li><b><?php _e( 'Languages', 'multisite-plugin-manager'); ?>:</b>
-				<ul>
-					<li>English (development), German</li>
-					<li><?php printf( __( 'Help to translate at %s', 'multisite-plugin-manager'), '<a href="https://translate.foe-services.de/projects/multisite-plugin-manager" target="_blank">Translate > Multisite Plugin Manager</a>'); ?></li>
-				</ul>
-			</li>
+			<li><b><?php _e( 'Languages', 'multisite-plugin-manager'); ?>:</b> English (development), German, <a href="https://translate.foe-services.de/projects/multisite-plugin-manager" target="_blank">more...</a></li> 
 			<li><b><?php _e( 'License', 'multisite-plugin-manager'); ?>:</b> <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPLv2</a></li>
-			<li><b><?php _e( 'Support the development', 'multisite-plugin-manager'); ?>:</b>
-				<ul>
-					<li><?php _e( 'You are probably making money with this plugin. Why not send me a small donation in honor of the time I put into this? Thanks!', 'multisite-plugin-manager'); ?></li>
-					<li>
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-						<input type="hidden" name="cmd" value="_s-xclick">
-						<input type="hidden" name="hosted_button_id" value="W66QWST9B9KRN">
-						<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-						<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/scr/pixel.gif" width="1" height="1">
-						</form>
-					</li>
-				</ul>
-			</li>
 		</ul>
 	<?php 
 	}
