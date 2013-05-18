@@ -1,16 +1,15 @@
 === Multisite Plugin Manager ===
 Contributors: uglyrobot
 Tags: multisite, wpmu, plugins
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=W66QWST9B9KRN
 Requires at least: 3.1
 Tested up to: 3.5.1
 Stable tag: trunk
 
-The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network.
+Manage plugin access permissions across your entire multisite network.
 
 == Description ==
-Plugin management for Wordpress Multisite that supports the native plugins page and the WPMU DEV Pro Sites plugin! Used on thousands of multisite installs across the web.
-Previously known as **WPMU Plugin Manager**, it uses a backend options page to adjust plugin permissions for all the sites in your network.
+Plugin management for Wordpress Multisite that supports the native plugins page. 
+It uses a backend options page to adjust plugin permissions for all the sites in your network.
 
 * Select what plugins sites have access to
 * Choose plugins to Auto-Activate for all new blogs
@@ -19,10 +18,12 @@ Previously known as **WPMU Plugin Manager**, it uses a backend options page to a
 * And as Super Admin, you can override all these to activate specific plugins on the sites you choose!
 * Removes the plugin meta row links (Version, Author, Plugin) and any update messages for blog admins
 
-Also, if you use the excellent <a href="http://premium.wpmudev.org/project/pro-sites">Pro Sites plugin from WPMU DEV</a> you will be able to charge for access to certain plugins!
+= Development =
 
-* A free plugin by Aaron Edwards of <a href="http://uglyrobot.com/">UglyRobot Web Development</a>.
-* Contribute Translations at [https://translate.foe-services.de/projects/multisite-plugin-manager](https://translate.foe-services.de/projects/multisite-plugin-manager)
+* GitHub Repository: [plugin-manager-mu](https://github.com/wp-repository/plugin-manager-mu)
+* Issue-Tracker: [Plugin Manager MU Issues](https://github.com/wp-repository/plugin-manager-mu/issues) **Please use the Issue-Tracker at GitHub!!**
+* Translation: [Translate > Plugin Manager MU](https://translate.foe-services.de/projects/plugin-manager-mu)
+
 
 == Installation ==
 = To Install: =
@@ -50,15 +51,18 @@ Also, if you use the excellent <a href="http://premium.wpmudev.org/project/pro-s
 = Can I use this plugin for non-multisite WP installs? =
 No, this plugin is only compatible (and useful) with Multisite installs.
 
-= Do I need the Pro Sites plugin installed? =
-Not at all, but if you install the <a href="http://premium.wpmudev.org/project/pro-sites">Pro Sites plugin from WPMU DEV</a> the options to charge for access to certain plugins will appear in the dropdowns.
-
 == Screenshots ==
 
 1. The plugin management admin page
 2. Overriding allowed plugins per site
 
 == Changelog ==
+
+= 3.2 =
+* "Dirty Fork" -> no renaming at this point
+* added translation support
+* fixes for WP 3.5
+* support for *Pro Sites plugin* is deprecated from v3.2 on - no fixes + removal planned for v3.3
 
 = 3.1.2 =
 * Important reflected cross-site scripting vulnerability fix! Props Matthew Fuller @Mozilla 
