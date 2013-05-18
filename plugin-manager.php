@@ -28,468 +28,472 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-class PluginManager {
+if ( !class_exists('PluginManager') ) { 
 
-	function __construct() {
-		//declare hooks
-		add_action( 'network_admin_menu', array( &$this, 'add_menu') );
-		add_action( 'wpmu_new_blog', array( &$this, 'new_blog') ); //auto activation hook
-		add_filter( 'all_plugins', array( &$this, 'remove_plugins') );
-		add_filter( 'plugin_action_links', array( &$this, 'action_links'), 10, 4 );
-		add_filter( 'active_plugins', array( &$this, 'check_activated') );
-		add_action( 'admin_notices', array( &$this, 'supporter_message') );
-		add_action( 'plugins_loaded', array( &$this, 'localization') );
+	class PluginManager {
 
-		//individual blog options
-		add_action( 'wpmueditblogaction', array( &$this, 'blog_options_form' ) );
-		add_action( 'wpmu_update_blog_options', array( &$this, 'blog_options_form_process' ) );
+		function __construct() {
+			//declare hooks
+			add_action( 'network_admin_menu', array( &$this, 'add_menu') );
+			add_action( 'wpmu_new_blog', array( &$this, 'new_blog') ); //auto activation hook
+			add_filter( 'all_plugins', array( &$this, 'remove_plugins') );
+			add_filter( 'plugin_action_links', array( &$this, 'action_links'), 10, 4 );
+			add_filter( 'active_plugins', array( &$this, 'check_activated') );
+			add_action( 'admin_notices', array( &$this, 'supporter_message') );
+			add_action( 'plugins_loaded', array( &$this, 'localization') );
 
-		add_filter( 'plugin_row_meta' , array( &$this, 'remove_plugin_meta' ), 10, 2 );
-		add_action( 'admin_init', array( &$this, 'remove_plugin_update_row' ) );
-	}
+			//individual blog options
+			add_action( 'wpmueditblogaction', array( &$this, 'blog_options_form' ) );
+			add_action( 'wpmu_update_blog_options', array( &$this, 'blog_options_form_process' ) );
 
-	function PluginManager() {
-		$this->__construct();
-	}
+			add_filter( 'plugin_row_meta' , array( &$this, 'remove_plugin_meta' ), 10, 2 );
+			add_action( 'admin_init', array( &$this, 'remove_plugin_update_row' ) );
+		}
 
-	function localization() {
-		load_plugin_textdomain( 'multisite-plugin-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
+		function PluginManager() {
+			$this->__construct();
+		}
 
-	function add_menu() {
-		$page = add_submenu_page(
-				'plugins.php',
-				__( 'Plugin Management', 'multisite-plugin-manager'),
-				__( 'Plugin Management', 'multisite-plugin-manager'),
-				'manage_network_options',
-				'plugin-management',
-				array( &$this, 'admin_page' )
-		);
-		add_action("load-$page", array( &$this, 'help_tabs'));
-	}
-        
-	function help_tabs() {
-		$screen = get_current_screen();
-		$screen->add_help_tab( array(
-			'id'        => 'multisite-plugin-manager_options',
-			'title'     => __( 'Options', 'multisite-plugin-manager'),
-			'callback'  => array( &$this, 'option_tab')
-		));
-		$screen->add_help_tab( array(
-			'id'        => 'multisite-plugin-manager_about',
-			'title'     => __( 'About', 'multisite-plugin-manager'),
-			'callback'  => array( &$this, 'about_tab')
-		));      
-	}
+		function localization() {
+			load_plugin_textdomain( 'multisite-plugin-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		}
 
-	function option_tab() { ?>
-		<p><strong><?php _e( 'Auto Activation', 'multisite-plugin-manager'); ?></strong>
-		- <?php _e( 'When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'multisite-plugin-manager'); ?></p>
+		function add_menu() {
+			$page = add_submenu_page(
+					'plugins.php',
+					__( 'Plugin Management', 'multisite-plugin-manager'),
+					__( 'Plugin Management', 'multisite-plugin-manager'),
+					'manage_network_options',
+					'plugin-management',
+					array( &$this, 'admin_page' )
+			);
+			add_action("load-$page", array( &$this, 'help_tabs'));
+		}
 
-		<p><strong><?php _e( 'User Control', 'multisite-plugin-manager'); ?></strong>
-		- <?php if ( function_exists('is_pro_site') ) { ?>
-		<?php _e( 'Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
-		<?php } else { ?>
-		<?php _e( 'When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
-		<?php } ?></p>
+		function help_tabs() {
+			$screen = get_current_screen();
+			$screen->add_help_tab( array(
+				'id'        => 'multisite-plugin-manager_options',
+				'title'     => __( 'Options', 'multisite-plugin-manager'),
+				'callback'  => array( &$this, 'option_tab')
+			));
+			$screen->add_help_tab( array(
+				'id'        => 'multisite-plugin-manager_about',
+				'title'     => __( 'About', 'multisite-plugin-manager'),
+				'callback'  => array( &$this, 'about_tab')
+			));      
+		}
 
-		<p><strong><?php _e( 'Mass Activation/Deactivation', 'multisite-plugin-manager'); ?></strong>
-		- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'multisite-plugin-manager'); ?></p>
-	<?php 
-	}
-        
-	function about_tab() { ?>
-		<style>.tab-about li { list-style: none; }</style>
-		<h1><?php _e( 'Multisite Plugin Manager', 'multisite-plugin-manager'); ?></h1>
-		<p>
-			<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">Homepage</a> | 
-			<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Support</a>
-		</p>
-		<ul class="tab-about">
-			<li><b><?php _e( 'Development', 'multisite-plugin-manager'); ?>: </b>
-				<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">GitHub repo</a> |
-				<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Issues</a> |
-				by <a href="http://labs.foe-services.de" target="_blank">Foe Services Labs</a> 
-			</li>
-			<li><b><?php _e( 'Languages', 'multisite-plugin-manager'); ?>:</b> English (development), German, <a href="https://translate.foe-services.de/projects/multisite-plugin-manager" target="_blank">more...</a></li> 
-			<li><b><?php _e( 'License', 'multisite-plugin-manager'); ?>:</b> <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPLv2</a></li>
-		</ul>
-	<?php 
-	}
+		function option_tab() { ?>
+			<p><strong><?php _e( 'Auto Activation', 'multisite-plugin-manager'); ?></strong>
+			- <?php _e( 'When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'multisite-plugin-manager'); ?></p>
 
-	function admin_page() {
-		if (!is_super_admin())
-			die('Nice Try!');
+			<p><strong><?php _e( 'User Control', 'multisite-plugin-manager'); ?></strong>
+			- <?php if ( function_exists('is_pro_site') ) { ?>
+			<?php _e( 'Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
+			<?php } else { ?>
+			<?php _e( 'When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
+			<?php } ?></p>
 
-		$this->process_form();
-		?>
-		<div class='wrap'>
-		<style type="text/css">
-			table#plugin-manager {
-				margin-top: 6px;
-			}
-			.widefat tr:hover td {
-				background-color: #DDD;
-			}
-		</style>
-			<?php screen_icon( 'plugins' ); ?>
-			<h2><?php _e( 'Manage Plugins', 'multisite-plugin-manager'); ?></h2>
+			<p><strong><?php _e( 'Mass Activation/Deactivation', 'multisite-plugin-manager'); ?></strong>
+			- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'multisite-plugin-manager'); ?></p>
+		<?php 
+		}
 
-			<?php if( isset( $_GET[ 'saved' ] ) ) { ?>
-				<div id="message" class="updated fade"><p><?php _e( 'Settings Saved', 'multisite-plugin-manager'); ?></p></div>
-			<?php } ?>
+		function about_tab() { ?>
+			<style>.tab-about li { list-style: none; }</style>
+			<h1><?php _e( 'Multisite Plugin Manager', 'multisite-plugin-manager'); ?></h1>
+			<p>
+				<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">Homepage</a> | 
+				<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Support</a>
+			</p>
+			<ul class="tab-about">
+				<li><b><?php _e( 'Development', 'multisite-plugin-manager'); ?>: </b>
+					<a href="https://github.com/wp-repository/multisite-plugin-manager" target="_blank">GitHub repo</a> |
+					<a href="https://github.com/wp-repository/multisite-plugin-manager/issues" target="_blank">Issues</a> |
+					by <a href="http://labs.foe-services.de" target="_blank">Foe Services Labs</a> 
+				</li>
+				<li><b><?php _e( 'Languages', 'multisite-plugin-manager'); ?>:</b> English (development), German, <a href="https://translate.foe-services.de/projects/multisite-plugin-manager" target="_blank">more...</a></li> 
+				<li><b><?php _e( 'License', 'multisite-plugin-manager'); ?>:</b> <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPLv2</a></li>
+			</ul>
+		<?php 
+		}
 
-			<form action="plugins.php?page=plugin-management&saved=1" method="post">
-			<table class="widefat" id="plugin-manager">
-				<thead>
-					<tr>
-						<th><?php _e( 'Name', 'multisite-plugin-manager'); ?></th>
-						<th><?php _e( 'Version', 'multisite-plugin-manager'); ?></th>
-						<th><?php _e( 'Author', 'multisite-plugin-manager'); ?></th>
-						<th title="<?php _e( 'Users may activate/deactivate', 'multisite-plugin-manager'); ?>"><?php _e( 'User Control', 'multisite-plugin-manager'); ?></th>
-						<th><?php _e( 'Mass Activate', 'multisite-plugin-manager'); ?></th>
-						<th><?php _e( 'Mass Deactivate', 'multisite-plugin-manager'); ?></th>
-					</tr>
-				</thead>
+		function admin_page() {
+			if (!is_super_admin())
+				die('Nice Try!');
+
+			$this->process_form();
+			?>
+			<div class='wrap'>
+			<style type="text/css">
+				table#plugin-manager {
+					margin-top: 6px;
+				}
+				.widefat tr:hover td {
+					background-color: #DDD;
+				}
+			</style>
+				<?php screen_icon( 'plugins' ); ?>
+				<h2><?php _e( 'Manage Plugins', 'multisite-plugin-manager'); ?></h2>
+
+				<?php if( isset( $_GET[ 'saved' ] ) ) { ?>
+					<div id="message" class="updated fade"><p><?php _e( 'Settings Saved', 'multisite-plugin-manager'); ?></p></div>
+				<?php } ?>
+
+				<form action="plugins.php?page=plugin-management&saved=1" method="post">
+				<table class="widefat" id="plugin-manager">
+					<thead>
+						<tr>
+							<th><?php _e( 'Name', 'multisite-plugin-manager'); ?></th>
+							<th><?php _e( 'Version', 'multisite-plugin-manager'); ?></th>
+							<th><?php _e( 'Author', 'multisite-plugin-manager'); ?></th>
+							<th title="<?php _e( 'Users may activate/deactivate', 'multisite-plugin-manager'); ?>"><?php _e( 'User Control', 'multisite-plugin-manager'); ?></th>
+							<th><?php _e( 'Mass Activate', 'multisite-plugin-manager'); ?></th>
+							<th><?php _e( 'Mass Deactivate', 'multisite-plugin-manager'); ?></th>
+						</tr>
+					</thead>
+					<?php
+					$plugins = get_plugins();
+					$auto_activate = (array)get_site_option('pm_auto_activate_list');
+					$user_control = (array)get_site_option('pm_user_control_list');
+					$supporter_control = (array)get_site_option('pm_supporter_control_list');
+					foreach ( $plugins as $file => $p ) {
+
+					//skip network plugins or network activated plugins
+					if ( is_network_only_plugin( $file ) || is_plugin_active_for_network( $file ) )
+						continue;
+					?>
+					<tbody>	
+						<tr>
+							<td><?php echo $p['Name']?></td>
+							<td><?php echo $p['Version']?></td>
+							<td><?php echo $p['Author']?></td>
+							<td>
+								<?php
+								echo '<select name="control['.$file.']" />'."\n";
+								$u_checked = in_array($file, $user_control);
+								$s_checked = in_array($file, $supporter_control);
+								$auto_checked = in_array($file, $auto_activate);
+
+								if ($u_checked) {
+										$n_opt = '';
+										$s_opt = '';
+										$a_opt = ' selected="yes"';
+										$auto_opt = '';
+								} else if ($s_checked) {
+										$n_opt = '';
+										$s_opt = ' selected="yes"';
+										$a_opt = '';
+										$auto_opt = '';
+								} else if ($auto_checked) {
+										$n_opt = '';
+										$s_opt = '';
+										$a_opt = '';
+										$auto_opt = ' selected="yes"';
+								}else {
+										$n_opt = ' selected="yes"';
+										$s_opt = '';
+										$a_opt = '';
+										$auto_opt = '';
+								}
+
+								$opts = '<option value="none"'.$n_opt.'>' . __( 'None', 'multisite-plugin-manager') . '</option>'."\n";
+								if ( function_exists('is_pro_site'))
+									$opts .= '<option value="supporters"'.$s_opt.'>' . __( 'Pro Sites', 'multisite-plugin-manager') . '</option>'."\n";
+
+								$opts .= '<option value="all"'.$a_opt.'>' . __( 'All Users', 'multisite-plugin-manager') . '</option>'."\n";
+								$opts .= '<option value="auto"'.$auto_opt.'>' . __( 'Auto-Activate (All Users)', 'multisite-plugin-manager') . '</option>'."\n";
+								echo $opts.'</select>';
+								?>
+							</td>
+							<td><?php echo "<a href='plugins.php?page=plugin-management&mass_activate=$file'>" . __( 'Activate All', 'multisite-plugin-manager') . "</a>" ?></td>
+							<td><?php echo "<a href='plugins.php?page=plugin-management&mass_deactivate=$file'>" . __( 'Deactivate All', 'multisite-plugin-manager') . "</a>" ?></td>
+						</tr>
+					</tbody>
+				<?php } ?>
+				</table>
+				<p class="submit"><input class="button-primary" name="Submit" value="<?php _e( 'Save Changes') ?>" type="submit"></p>
+				</form>
+			</div>
 				<?php
-				$plugins = get_plugins();
-				$auto_activate = (array)get_site_option('pm_auto_activate_list');
-				$user_control = (array)get_site_option('pm_user_control_list');
-				$supporter_control = (array)get_site_option('pm_supporter_control_list');
-				foreach ( $plugins as $file => $p ) {
+		} //end admin_page()
 
+		//removes the meta information for normal admins
+		function remove_plugin_meta( $plugin_meta, $plugin_file ) {
+			if ( is_super_admin() ) {
+				return $plugin_meta;
+			} else {
+				remove_all_actions("after_plugin_row_$plugin_file");
+				return array();
+			}
+		}
+
+		function remove_plugin_update_row() {
+			if ( !is_super_admin() )
+				remove_all_actions('after_plugin_row');
+		}
+
+		function process_form() {
+			if ( isset($_GET['mass_activate']) ) {
+				$plugin = $_GET['mass_activate'];
+				$this->mass_activate($plugin);
+			}
+			if ( isset($_GET['mass_deactivate']) ) {
+				$plugin = $_GET['mass_deactivate'];
+				$this->mass_deactivate($plugin);
+			}
+			if ( isset($_POST['control']) ) {
+				//create blank arrays
+				$supporter_control = array();
+				$user_control = array();
+				$auto_activate = array();
+				foreach ($_POST['control'] as $plugin => $value) {
+					if ( $value == 'none' ) {
+						//do nothing
+					} else if ( $value == 'supporters' ) {
+						$supporter_control[] = $plugin;
+					} else if ( $value == 'all' ) {
+						$user_control[] = $plugin;
+					} else if ( $value == 'auto' ) {
+						$auto_activate[] = $plugin;
+					}
+				}
+				update_site_option( 'pm_supporter_control_list', array_unique($supporter_control));
+				update_site_option( 'pm_user_control_list', array_unique($user_control));
+				update_site_option( 'pm_auto_activate_list', array_unique($auto_activate));
+
+				//can't save blank value via update_site_option
+				if ( !$supporter_control )
+					update_site_option( 'pm_supporter_control_list', 'EMPTY');
+
+				if ( !$user_control )
+					update_site_option( 'pm_user_control_list', 'EMPTY');
+
+				if ( !$auto_activate )
+					update_site_option( 'pm_auto_activate_list', 'EMPTY');
+
+			}
+		}
+
+		//options added to wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
+		function blog_options_form($blog_id) {
+			$plugins = get_plugins();
+			$override_plugins = (array)get_blog_option($blog_id, 'pm_plugin_override_list');
+			?>
+			</table>
+			<h3><?php _e( 'Plugin Override Options', 'multisite-plugin-manager') ?></h3>
+			<p style="padding:5px 10px 0 10px;margin:0;">
+			<?php printf( __( 'Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings.', 'multisite-plugin-manager'), '<a href="plugins.php?page=plugin-management">', '</a>'); ?>
+			</p>
+			<table class="widefat" style="margin:10px;width:95%;">
+			<thead>
+				<tr>
+					<th title="<?php _e( 'Blog users may activate/deactivate', 'multisite-plugin-manager') ?>"><?php _e( 'User Control', 'multisite-plugin-manager') ?></th>
+					<th><?php _e( 'Name', 'multisite-plugin-manager'); ?></th>
+					<th><?php _e( 'Version', 'multisite-plugin-manager'); ?></th>
+					<th><?php _e( 'Author', 'multisite-plugin-manager'); ?></th>
+				</tr>
+			</thead>
+			<?php
+			foreach ( $plugins as $file => $p ) {
 				//skip network plugins or network activated plugins
 				if ( is_network_only_plugin( $file ) || is_plugin_active_for_network( $file ) )
 					continue;
-				?>
-				<tbody>	
-					<tr>
-						<td><?php echo $p['Name']?></td>
-						<td><?php echo $p['Version']?></td>
-						<td><?php echo $p['Author']?></td>
-						<td>
-							<?php
-							echo '<select name="control['.$file.']" />'."\n";
-							$u_checked = in_array($file, $user_control);
-							$s_checked = in_array($file, $supporter_control);
-							$auto_checked = in_array($file, $auto_activate);
-
-							if ($u_checked) {
-									$n_opt = '';
-									$s_opt = '';
-									$a_opt = ' selected="yes"';
-									$auto_opt = '';
-							} else if ($s_checked) {
-									$n_opt = '';
-									$s_opt = ' selected="yes"';
-									$a_opt = '';
-									$auto_opt = '';
-							} else if ($auto_checked) {
-									$n_opt = '';
-									$s_opt = '';
-									$a_opt = '';
-									$auto_opt = ' selected="yes"';
-							}else {
-									$n_opt = ' selected="yes"';
-									$s_opt = '';
-									$a_opt = '';
-									$auto_opt = '';
-							}
-
-							$opts = '<option value="none"'.$n_opt.'>' . __( 'None', 'multisite-plugin-manager') . '</option>'."\n";
-							if ( function_exists('is_pro_site'))
-								$opts .= '<option value="supporters"'.$s_opt.'>' . __( 'Pro Sites', 'multisite-plugin-manager') . '</option>'."\n";
-
-							$opts .= '<option value="all"'.$a_opt.'>' . __( 'All Users', 'multisite-plugin-manager') . '</option>'."\n";
-							$opts .= '<option value="auto"'.$auto_opt.'>' . __( 'Auto-Activate (All Users)', 'multisite-plugin-manager') . '</option>'."\n";
-							echo $opts.'</select>';
-							?>
-						</td>
-						<td><?php echo "<a href='plugins.php?page=plugin-management&mass_activate=$file'>" . __( 'Activate All', 'multisite-plugin-manager') . "</a>" ?></td>
-						<td><?php echo "<a href='plugins.php?page=plugin-management&mass_deactivate=$file'>" . __( 'Deactivate All', 'multisite-plugin-manager') . "</a>" ?></td>
-					</tr>
-				</tbody>
-			<?php } ?>
-			</table>
-			<p class="submit"><input class="button-primary" name="Submit" value="<?php _e( 'Save Changes') ?>" type="submit"></p>
-			</form>
-		</div>
-            <?php
-	} //end admin_page()
-
-	//removes the meta information for normal admins
-	function remove_plugin_meta( $plugin_meta, $plugin_file ) {
-		if ( is_super_admin() ) {
-			return $plugin_meta;
-		} else {
-			remove_all_actions("after_plugin_row_$plugin_file");
-			return array();
+			?>
+				<tr>
+					<td>
+					<?php
+						$checked = (in_array($file, $override_plugins)) ? 'checked="checked"' : '';
+						echo '<label><input name="plugins['.$file.']" type="checkbox" value="1" '.$checked.'/> ' . __( 'Enable', 'multisite-plugin-manager') . '</label>';
+					?>
+					</td>
+					<td><?php echo $p['Name']?></td>
+					<td><?php echo $p['Version']?></td>
+					<td><?php echo $p['Author']?></td>
+				</tr>
+				<?php
+			}
+			echo '</table>';
 		}
-	}
 
-	function remove_plugin_update_row() {
-		if ( !is_super_admin() )
-			remove_all_actions('after_plugin_row');
-	}
+		//process options from wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
+		function blog_options_form_process() {
+			$override_plugins = array();
+			if (is_array($_POST['plugins'])) {
+				foreach ((array)$_POST['plugins'] as $plugin => $value) {
+					$override_plugins[] = $plugin;
+				}
+				update_option( "pm_plugin_override_list", $override_plugins );
+			} else {
+				update_option( "pm_plugin_override_list", array() );
+			}
+		}
 
-	function process_form() {
-		if ( isset($_GET['mass_activate']) ) {
-			$plugin = $_GET['mass_activate'];
-			$this->mass_activate($plugin);
+		//activate on new blog
+		function new_blog($blog_id) {
+			require_once( ABSPATH.'wp-admin/includes/plugin.php' );
+
+			$auto_activate = (array)get_site_option('pm_auto_activate_list');
+			if (count($auto_activate)) {
+				switch_to_blog($blog_id);
+				activate_plugins($auto_activate, '', false); //silently activate any plugins
+				restore_current_blog();
+			}
 		}
-		if ( isset($_GET['mass_deactivate']) ) {
-			$plugin = $_GET['mass_deactivate'];
-			$this->mass_deactivate($plugin);
+
+		function mass_activate($plugin) {
+			global $wpdb;
+			set_time_limit(120);
+
+			$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0");
+			if ($blogs) {
+				foreach($blogs as $blog_id) {
+					switch_to_blog($blog_id);
+					activate_plugin($plugin); //silently activate the plugin
+					restore_current_blog();
+				} ?>
+				<div id="message" class="updated fade"><p><?php printf( __( '%s has been MASS ACTIVATED.', 'multisite-plugin-manager'), '<span style="color:#FF3300;">' . esc_html($plugin) . '</span>'); ?></p></div>
+				<?php
+			} else { ?>
+				<div class="error"><p><?php _e( 'Failed to mass activate: error selecting blogs', 'multisite-plugin-manager'); ?></p></div>
+			<?php
+			}
 		}
-		if ( isset($_POST['control']) ) {
-			//create blank arrays
-			$supporter_control = array();
-			$user_control = array();
-			$auto_activate = array();
-			foreach ($_POST['control'] as $plugin => $value) {
-				if ( $value == 'none' ) {
-					//do nothing
-				} else if ( $value == 'supporters' ) {
-					$supporter_control[] = $plugin;
-				} else if ( $value == 'all' ) {
-					$user_control[] = $plugin;
-				} else if ( $value == 'auto' ) {
-					$auto_activate[] = $plugin;
+
+		function mass_deactivate($plugin) {
+			global $wpdb;
+			set_time_limit(120);
+			$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0");
+
+			if ($blogs) {
+				foreach ($blogs as $blog_id)	{
+					switch_to_blog($blog_id);
+					deactivate_plugins($plugin, true); //silently deactivate the plugin
+					restore_current_blog();
+				} ?>
+				<div id="message" class="updated fade"><p><?php printf( __( '%s has been MASS DEACTIVATED.', 'multisite-plugin-manager'), '<span style="color:#FF3300;">' . esc_html($plugin) . '</span>'); ?></p></div><?php
+			} else { ?>
+				<div class="error"><p><?php _e( 'Failed to mass deactivate: error selecting blogs', 'multisite-plugin-manager'); ?></p></div>
+			<?php
+			}
+		}
+
+		//remove plugins with no user control
+		function remove_plugins($all_plugins) {
+			if (is_super_admin()) //don't filter siteadmin
+			return $all_plugins;
+
+			$auto_activate		= (array)get_site_option('pm_auto_activate_list');
+			$user_control		= (array)get_site_option('pm_user_control_list');
+			$supporter_control	= (array)get_site_option('pm_supporter_control_list');
+			$override_plugins	= (array)get_option('pm_plugin_override_list');
+
+			foreach ( (array)$all_plugins as $plugin_file => $plugin_data) {
+				if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $supporter_control) || in_array($plugin_file, $override_plugins)) {
+					//do nothing - leave it in
+				} else {
+					unset($all_plugins[$plugin_file]); //remove plugin
 				}
 			}
-			update_site_option( 'pm_supporter_control_list', array_unique($supporter_control));
-			update_site_option( 'pm_user_control_list', array_unique($user_control));
-			update_site_option( 'pm_auto_activate_list', array_unique($auto_activate));
-
-			//can't save blank value via update_site_option
-			if ( !$supporter_control )
-				update_site_option( 'pm_supporter_control_list', 'EMPTY');
-
-			if ( !$user_control )
-				update_site_option( 'pm_user_control_list', 'EMPTY');
-			
-			if ( !$auto_activate )
-				update_site_option( 'pm_auto_activate_list', 'EMPTY');
-			
+			return $all_plugins;
 		}
-	}
 
-	//options added to wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
-	function blog_options_form($blog_id) {
-		$plugins = get_plugins();
-		$override_plugins = (array)get_blog_option($blog_id, 'pm_plugin_override_list');
-		?>
-		</table>
-		<h3><?php _e( 'Plugin Override Options', 'multisite-plugin-manager') ?></h3>
-		<p style="padding:5px 10px 0 10px;margin:0;">
-		<?php printf( __( 'Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings.', 'multisite-plugin-manager'), '<a href="plugins.php?page=plugin-management">', '</a>'); ?>
-		</p>
-		<table class="widefat" style="margin:10px;width:95%;">
-		<thead>
-			<tr>
-				<th title="<?php _e( 'Blog users may activate/deactivate', 'multisite-plugin-manager') ?>"><?php _e( 'User Control', 'multisite-plugin-manager') ?></th>
-				<th><?php _e( 'Name', 'multisite-plugin-manager'); ?></th>
-				<th><?php _e( 'Version', 'multisite-plugin-manager'); ?></th>
-				<th><?php _e( 'Author', 'multisite-plugin-manager'); ?></th>
-			</tr>
-		</thead>
-		<?php
-		foreach ( $plugins as $file => $p ) {
-			//skip network plugins or network activated plugins
-			if ( is_network_only_plugin( $file ) || is_plugin_active_for_network( $file ) )
-				continue;
-		?>
-			<tr>
-				<td>
-				<?php
-					$checked = (in_array($file, $override_plugins)) ? 'checked="checked"' : '';
-					echo '<label><input name="plugins['.$file.']" type="checkbox" value="1" '.$checked.'/> ' . __( 'Enable', 'multisite-plugin-manager') . '</label>';
-				?>
-				</td>
-				<td><?php echo $p['Name']?></td>
-				<td><?php echo $p['Version']?></td>
-				<td><?php echo $p['Author']?></td>
-			</tr>
-			<?php
-		}
-		echo '</table>';
-	}
+		//plugin activate links
+		function action_links($action_links, $plugin_file, $plugin_data, $context) {
+			global $psts, $blog_id;
 
-	//process options from wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
-	function blog_options_form_process() {
-		$override_plugins = array();
-		if (is_array($_POST['plugins'])) {
-			foreach ((array)$_POST['plugins'] as $plugin => $value) {
-				$override_plugins[] = $plugin;
+			if (is_super_admin()) {//don't filter siteadmin
+				return $action_links;
 			}
-			update_option( "pm_plugin_override_list", $override_plugins );
-		} else {
-			update_option( "pm_plugin_override_list", array() );
-		}
-	}
 
-	//activate on new blog
-	function new_blog($blog_id) {
-		require_once( ABSPATH.'wp-admin/includes/plugin.php' );
+			$auto_activate = (array)get_site_option('pm_auto_activate_list');
+			$user_control = (array)get_site_option('pm_user_control_list');
+			$supporter_control = (array)get_site_option('pm_supporter_control_list');
+			$override_plugins = (array)get_option('pm_plugin_override_list');
 
-		$auto_activate = (array)get_site_option('pm_auto_activate_list');
-		if (count($auto_activate)) {
-			switch_to_blog($blog_id);
-			activate_plugins($auto_activate, '', false); //silently activate any plugins
-			restore_current_blog();
-		}
-	}
-
-	function mass_activate($plugin) {
-		global $wpdb;
-		set_time_limit(120);
-
-		$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0");
-		if ($blogs) {
-			foreach($blogs as $blog_id) {
-				switch_to_blog($blog_id);
-				activate_plugin($plugin); //silently activate the plugin
-				restore_current_blog();
-			} ?>
-			<div id="message" class="updated fade"><p><?php printf( __( '%s has been MASS ACTIVATED.', 'multisite-plugin-manager'), '<span style="color:#FF3300;">' . esc_html($plugin) . '</span>'); ?></p></div>
-			<?php
-		} else { ?>
-			<div class="error"><p><?php _e( 'Failed to mass activate: error selecting blogs', 'multisite-plugin-manager'); ?></p></div>
-		<?php
-		}
-	}
-
-	function mass_deactivate($plugin) {
-		global $wpdb;
-		set_time_limit(120);
-		$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0");
-		
-		if ($blogs) {
-			foreach ($blogs as $blog_id)	{
-				switch_to_blog($blog_id);
-				deactivate_plugins($plugin, true); //silently deactivate the plugin
-				restore_current_blog();
-			} ?>
-			<div id="message" class="updated fade"><p><?php printf( __( '%s has been MASS DEACTIVATED.', 'multisite-plugin-manager'), '<span style="color:#FF3300;">' . esc_html($plugin) . '</span>'); ?></p></div><?php
-		} else { ?>
-			<div class="error"><p><?php _e( 'Failed to mass deactivate: error selecting blogs', 'multisite-plugin-manager'); ?></p></div>
-		<?php
-		}
-	}
-
-	//remove plugins with no user control
-	function remove_plugins($all_plugins) {
-		if (is_super_admin()) //don't filter siteadmin
-		return $all_plugins;
-
-		$auto_activate		= (array)get_site_option('pm_auto_activate_list');
-		$user_control		= (array)get_site_option('pm_user_control_list');
-		$supporter_control	= (array)get_site_option('pm_supporter_control_list');
-		$override_plugins	= (array)get_option('pm_plugin_override_list');
-
-		foreach ( (array)$all_plugins as $plugin_file => $plugin_data) {
-			if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $supporter_control) || in_array($plugin_file, $override_plugins)) {
-				//do nothing - leave it in
-			} else {
-				unset($all_plugins[$plugin_file]); //remove plugin
-			}
-		}
-		return $all_plugins;
-	}
-
-	//plugin activate links
-	function action_links($action_links, $plugin_file, $plugin_data, $context) {
-		global $psts, $blog_id;
-		
-		if (is_super_admin()) {//don't filter siteadmin
+			if ($context != 'active') {
+				if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $override_plugins)) {
+					return $action_links;
+				} else if ( in_array($plugin_file, $supporter_control) ) {
+					if ( function_exists('is_pro_site') ) {
+						if (is_pro_site()) {
+							return $action_links;
+						} else {
+							add_action( "after_plugin_row_$plugin_file", array( &$this, 'remove_checks' ) ); //add action to disable row's checkbox
+							return array('<a style="color:red;" href="'.$psts->checkout_url($blog_id).'">Pro Sites Only</a>');
+						}
+					}
+				}
+			}             
 			return $action_links;
 		}
 
-		$auto_activate = (array)get_site_option('pm_auto_activate_list');
-		$user_control = (array)get_site_option('pm_user_control_list');
-		$supporter_control = (array)get_site_option('pm_supporter_control_list');
-		$override_plugins = (array)get_option('pm_plugin_override_list');
+		//show supporter message if plugin exists
+		function supporter_message() {
+			global $pagenow;
 
-		if ($context != 'active') {
-			if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $override_plugins)) {
-				return $action_links;
-			} else if ( in_array($plugin_file, $supporter_control) ) {
-				if ( function_exists('is_pro_site') ) {
-					if (is_pro_site()) {
-						return $action_links;
-					} else {
-						add_action( "after_plugin_row_$plugin_file", array( &$this, 'remove_checks' ) ); //add action to disable row's checkbox
-						return array('<a style="color:red;" href="'.$psts->checkout_url($blog_id).'">Pro Sites Only</a>');
+			if (is_super_admin()) //don't filter siteadmin
+				return;
+
+			if ( function_exists('is_pro_site') && $pagenow == 'plugins.php') {
+				if ( !is_pro_site() ) {
+					supporter_feature_notice();
+				} else {
+					echo '<div class="error" style="background-color:#F9F9F9;border:0;font-weight:bold;"><p>As a '.get_site_option('site_name')." Pro Site, you now have access to all our premium plugins!</p></div>";
+				}
+			}
+			return;
+		}
+
+		//use jquery to remove associated checkboxes to prevent mass activation (usability, not security)
+		function remove_checks( $plugin_file ) {
+			echo '<script type="text/javascript">jQuery("input:checkbox[value=\''.esc_js($plugin_file).'\']).remove();</script>';
+		}
+
+		/*
+		Removes activated plugins that should not have been activated (multi). Single activations
+		are additionaly protected by a nonce field. Dirty hack in case someone uses firebug or
+		something to hack the post and simulate a bulk activation. I'd rather prevent
+		them from being activated in the first place, but there are no hooks for that! The
+		display will show the activated status, but really they are not. Only hacking attempts
+		will see this though! */
+		function check_activated( $active_plugins ) {
+			if (is_super_admin()) //don't filter siteadmin
+				return $active_plugins;
+
+			//only perform check right after activation hack attempt
+			if ($_POST['action'] != 'activate-selected' && $_POST['action2'] != 'activate-selected')
+				return $active_plugins;
+
+			$auto_activate		= (array)get_site_option('pm_auto_activate_list');
+			$user_control		= (array)get_site_option('pm_user_control_list');
+			$supporter_control	= (array)get_site_option('pm_supporter_control_list');
+			$override_plugins	= (array)get_option('pm_plugin_override_list');
+
+			foreach ( (array)$active_plugins as $plugin_file => $plugin_data ) {
+				if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $supporter_control) || in_array($plugin_file, $override_plugins)) {
+					//do nothing - leave it in
+				} else {
+					deactivate_plugins($plugin_file, true); //silently remove any plugins
+					unset($active_plugins[$plugin_file]);
+				}
+			}
+
+			if ( function_exists('is_pro_site') ) {
+				if (count($supporter_control) && !is_pro_site()) {
+					deactivate_plugins($supporter_control, true); //silently remove any plugins
+					foreach ($supporter_control as $plugin_file) {
+						  unset($active_plugins[$plugin_file]);
 					}
 				}
 			}
-		}             
-		return $action_links;
-	}
 
-	//show supporter message if plugin exists
-	function supporter_message() {
-		global $pagenow;
-
-		if (is_super_admin()) //don't filter siteadmin
-			return;
-		
-		if ( function_exists('is_pro_site') && $pagenow == 'plugins.php') {
-			if ( !is_pro_site() ) {
-				supporter_feature_notice();
-			} else {
-				echo '<div class="error" style="background-color:#F9F9F9;border:0;font-weight:bold;"><p>As a '.get_site_option('site_name')." Pro Site, you now have access to all our premium plugins!</p></div>";
-			}
-		}
-		return;
-	}
-
-	//use jquery to remove associated checkboxes to prevent mass activation (usability, not security)
-	function remove_checks( $plugin_file ) {
-		echo '<script type="text/javascript">jQuery("input:checkbox[value=\''.esc_js($plugin_file).'\']).remove();</script>';
-	}
-
-	/*
-	Removes activated plugins that should not have been activated (multi). Single activations
-	are additionaly protected by a nonce field. Dirty hack in case someone uses firebug or
-	something to hack the post and simulate a bulk activation. I'd rather prevent
-	them from being activated in the first place, but there are no hooks for that! The
-	display will show the activated status, but really they are not. Only hacking attempts
-	will see this though! */
-	function check_activated( $active_plugins ) {
-		if (is_super_admin()) //don't filter siteadmin
 			return $active_plugins;
-		
-		//only perform check right after activation hack attempt
-		if ($_POST['action'] != 'activate-selected' && $_POST['action2'] != 'activate-selected')
-			return $active_plugins;
-		
-		$auto_activate		= (array)get_site_option('pm_auto_activate_list');
-		$user_control		= (array)get_site_option('pm_user_control_list');
-		$supporter_control	= (array)get_site_option('pm_supporter_control_list');
-		$override_plugins	= (array)get_option('pm_plugin_override_list');
-
-		foreach ( (array)$active_plugins as $plugin_file => $plugin_data ) {
-			if (in_array($plugin_file, $user_control) || in_array($plugin_file, $auto_activate) || in_array($plugin_file, $supporter_control) || in_array($plugin_file, $override_plugins)) {
-				//do nothing - leave it in
-			} else {
-				deactivate_plugins($plugin_file, true); //silently remove any plugins
-				unset($active_plugins[$plugin_file]);
-			}
 		}
 
-		if ( function_exists('is_pro_site') ) {
-			if (count($supporter_control) && !is_pro_site()) {
-				deactivate_plugins($supporter_control, true); //silently remove any plugins
-				foreach ($supporter_control as $plugin_file) {
-					  unset($active_plugins[$plugin_file]);
-				}
-			}
-		}
+	} // END class PluginManager
 
-		return $active_plugins;
-	}
-	
-}
+	$GLOBALS['PluginManager'] = new PluginManager();
 
-new PluginManager();
+} // END if class_exists
