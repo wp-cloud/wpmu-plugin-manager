@@ -8,13 +8,14 @@ __Manage plugin permissions in a WordPress MU installation__
 | ----:						| :----				| :---: | :----						| :----				|
 | Requires at least:		| __3.1__			| *		| [GitHub-Repository][1.3]	| [Translate][1.7]	|
 | Tested up to:				| __3.5.1__			| *		| [Issue-Tracker][1.4]		|					|
-| Current stable release:	| __[3.2][1.5]__	| *		|							|					|
+| Current stable release:	| __[3.2][1.5]__	| *		| Current dev version:		| [3.3-dev][1.8]	|
 
 [1.1]: https://github.com/wp-repository/mutlisite-plugin-manager
 [1.3]: https://github.com/wp-repository/mutlisite-plugin-manager
 [1.4]: https://github.com/wp-repository/mutlisite-plugin-manager/issues
 [1.5]: https://github.com/wp-repository/mutlisite-plugin-manager/archive/3.2.zip
 [1.7]: https://translate.foe-services.de/projects/mutlisite-plugin-manager
+[1.8]: https://github.com/wp-repository/multisite-plugin-manager/archive/master.zip
 
 ### Description
 Plugin management for Wordpress Multisite that supports the native plugins page. 

@@ -3,7 +3,7 @@
 Plugin Name: Multisite Plugin Manager
 Plugin URI: http://wordpress.org/extend/plugins/multisite-plugin-manager/
 Description: Manage plugin access permissions across your entire multisite network.
-Version: 3.2
+Version: 3.3-dev
 Author: Aaron Edwards
 Author URI: http://uglyrobot.com
 License: GPLv2

@@ -3,7 +3,7 @@ Contributors: uglyrobot
 Tags: multisite, wpmu, plugins
 Requires at least: 3.1
 Tested up to: 3.5.1
-Stable tag: trunk
+Stable tag: 3.3
 
 Manage plugin access permissions across your entire multisite network.
 
@@ -57,6 +57,11 @@ No, this plugin is only compatible (and useful) with Multisite installs.
 2. Overriding allowed plugins per site
 
 == Changelog ==
+
+= 3.3-dev =
+* added build testing via travis-ci.org
+* added custom unit tests @TODO
+* TBD
 
 = 3.2 =
 * "Dirty Fork" -> no renaming at this point
