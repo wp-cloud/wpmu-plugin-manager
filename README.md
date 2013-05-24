@@ -1,7 +1,6 @@
 # Multisite Plugin Manager [![Build Status](https://travis-ci.org/wp-repository/multisite-plugin-manager.png?branch=master)](https://travis-ci.org/wp-repository/multisite-plugin-manager)
 __Manage plugin permissions in a WordPress MU installation__
 
-## Details
 [Homepage][1.1]
 
 | WordPress					| Version			| *		| Development				|					|
@@ -29,8 +28,7 @@ It uses a backend options page to adjust plugin permissions for all the sites in
 * Removes the plugin meta row links (Version, Author, Plugin) and any update messages for blog admins
 
 
-## Development
-### Developers
+## Developers
 | Name					| GitHub				| WordPress.org			| Web									| Status				|
 | :----					| :----					| :----					| :----									| ----:					|
 | Aaron					| -						| [uglyrobot][2.3.2]	| http://uglyrobot.com/					| Inactive				|
@@ -62,7 +60,7 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 
 
 ## Changelog
-* __3.3__ (future release)
+* __3.3-dev__ _[future plans/roadmap][4.1]_
 	* added build testing via travis-ci.org
 	* added custom unit tests @TODO
 	* TBD
@@ -80,3 +78,5 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 	* Fix auto-activate for new blogs
 * __3.0__
 	* Complete rewrite for WP 3.1
+
+[4.1]: ../../issues
