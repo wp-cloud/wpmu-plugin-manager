@@ -59,7 +59,6 @@ if ( ! class_exists('PluginManager') ) {
 			add_filter( 'plugin_action_links', array( &$this, 'action_links'), 10, 4 );
 			add_filter( 'active_plugins', array( &$this, 'check_activated') );
 			add_action( 'admin_notices', array( &$this, 'supporter_message') );
-			add_action( 'plugins_loaded', array( &$this, 'localization') );
 
 			//individual blog options
 			add_action( 'wpmueditblogaction', array( &$this, 'blog_options_form' ) );
@@ -243,7 +242,7 @@ if ( ! class_exists('PluginManager') ) {
 					</tbody>
 				<?php } ?>
 				</table>
-				<p class="submit"><input class="button-primary" name="Submit" value="<?php _e( 'Save Changes') ?>" type="submit"></p>
+					<?php submit_button( esc_attr__( 'Save Changes' ), $type = 'primary large', $name = 'submit', $wrap = TRUE ); ?>
 				</form>
 			</div>
 				<?php
@@ -262,6 +261,8 @@ if ( ! class_exists('PluginManager') ) {
 		function remove_plugin_update_row() {
 			if ( !is_super_admin() )
 				remove_all_actions('after_plugin_row');
+			
+			$this->localization();
 		}
 
 		function process_form() {
