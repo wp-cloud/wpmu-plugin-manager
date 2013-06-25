@@ -36,11 +36,19 @@ if ( ! function_exists( 'add_filter' ) ) {
 	exit();
 }
 
-if ( !class_exists('PluginManager') ) { 
+if ( ! class_exists('PluginManager') ) {
+
+	add_action(
+		'plugins_loaded', 
+		array ( 'Foe_Mail', 'get_instance' )
+	);
 
 	class PluginManager {
 
 		function __construct() {
+			if ( ! is_admin() )
+				return NULL;
+			
 			//declare hooks
 			add_action( 'network_admin_menu', array( &$this, 'add_menu') );
 			add_action( 'wpmu_new_blog', array( &$this, 'new_blog') ); //auto activation hook
@@ -58,22 +66,18 @@ if ( !class_exists('PluginManager') ) {
 			add_action( 'admin_init', array( &$this, 'remove_plugin_update_row' ) );
 		}
 
-		function PluginManager() {
-			$this->__construct();
-		}
-
 		function localization() {
 			load_plugin_textdomain( 'multisite-plugin-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		}
 
 		function add_menu() {
 			$page = add_submenu_page(
-					'plugins.php',
-					__( 'Plugin Management', 'multisite-plugin-manager'),
-					__( 'Plugin Management', 'multisite-plugin-manager'),
-					'manage_network_options',
-					'plugin-management',
-					array( &$this, 'admin_page' )
+				'plugins.php',
+				__( 'Plugin Management', 'multisite-plugin-manager'),
+				__( 'Plugin Management', 'multisite-plugin-manager'),
+				'manage_network_options',
+				'plugin-management',
+				array( &$this, 'admin_page' )
 			);
 			add_action("load-$page", array( &$this, 'help_tabs'));
 		}
@@ -93,18 +97,25 @@ if ( !class_exists('PluginManager') ) {
 		}
 
 		function option_tab() { ?>
-			<p><strong><?php _e( 'Auto Activation', 'multisite-plugin-manager'); ?></strong>
-			- <?php _e( 'When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'multisite-plugin-manager'); ?></p>
+			<p>
+				<strong><?php _e( 'Auto Activation', 'multisite-plugin-manager'); ?></strong>
+				- <?php _e( 'When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'multisite-plugin-manager'); ?>
+			</p>
 
-			<p><strong><?php _e( 'User Control', 'multisite-plugin-manager'); ?></strong>
-			- <?php if ( function_exists('is_pro_site') ) { ?>
-			<?php _e( 'Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
-			<?php } else { ?>
-			<?php _e( 'When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager'); ?>
-			<?php } ?></p>
+			<p>
+				<strong><?php _e( 'User Control', 'multisite-plugin-manager'); ?></strong>
+				- <?php 
+				if ( function_exists('is_pro_site') ) {
+					_e( 'Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager');
+				} 
+				else {
+					_e( 'When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'multisite-plugin-manager');
+				} ?>
+			</p>
 
-			<p><strong><?php _e( 'Mass Activation/Deactivation', 'multisite-plugin-manager'); ?></strong>
-			- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'multisite-plugin-manager'); ?></p>
+			<p>
+				<strong><?php _e( 'Mass Activation/Deactivation', 'multisite-plugin-manager'); ?></strong>
+				- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'multisite-plugin-manager'); ?></p>
 		<?php 
 		}
 
@@ -185,25 +196,25 @@ if ( !class_exists('PluginManager') ) {
 								$auto_checked = in_array($file, $auto_activate);
 
 								if ($u_checked) {
-										$n_opt = '';
-										$s_opt = '';
-										$a_opt = ' selected="yes"';
-										$auto_opt = '';
+									$n_opt = '';
+									$s_opt = '';
+									$a_opt = ' selected="yes"';
+									$auto_opt = '';
 								} else if ($s_checked) {
-										$n_opt = '';
-										$s_opt = ' selected="yes"';
-										$a_opt = '';
-										$auto_opt = '';
+									$n_opt = '';
+									$s_opt = ' selected="yes"';
+									$a_opt = '';
+									$auto_opt = '';
 								} else if ($auto_checked) {
-										$n_opt = '';
-										$s_opt = '';
-										$a_opt = '';
-										$auto_opt = ' selected="yes"';
-								}else {
-										$n_opt = ' selected="yes"';
-										$s_opt = '';
-										$a_opt = '';
-										$auto_opt = '';
+									$n_opt = '';
+									$s_opt = '';
+									$a_opt = '';
+									$auto_opt = ' selected="yes"';
+								} else {
+									$n_opt = ' selected="yes"';
+									$s_opt = '';
+									$a_opt = '';
+									$auto_opt = '';
 								}
 
 								$opts = '<option value="none"'.$n_opt.'>' . __( 'None', 'multisite-plugin-manager') . '</option>'."\n";
@@ -501,7 +512,5 @@ if ( !class_exists('PluginManager') ) {
 		}
 
 	} // END class PluginManager
-
-	$GLOBALS['PluginManager'] = new PluginManager();
 
 } // END if class_exists
