@@ -40,10 +40,13 @@ if ( ! class_exists('PluginManager') ) {
 
 	add_action(
 		'plugins_loaded', 
-		array ( 'Foe_Mail', 'get_instance' )
+		array ( 'PluginManager', 'get_instance' )
 	);
 
 	class PluginManager {
+		
+		// Plugin instance
+		protected static $instance = NULL;
 
 		function __construct() {
 			if ( ! is_admin() )
@@ -64,6 +67,14 @@ if ( ! class_exists('PluginManager') ) {
 
 			add_filter( 'plugin_row_meta' , array( &$this, 'remove_plugin_meta' ), 10, 2 );
 			add_action( 'admin_init', array( &$this, 'remove_plugin_update_row' ) );
+		}
+		
+		// Access this plugin’s working instance
+		public static function get_instance() {
+			if ( NULL === self::$instance )
+					self::$instance = new self;
+
+			return self::$instance;
 		}
 
 		function localization() {
