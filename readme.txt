@@ -1,9 +1,9 @@
-=== Multisite Plugin Manager ===
+=== WPMU Plugin Manager ===
 Contributors: uglyrobot
 Tags: multisite, wpmu, plugins
 Requires at least: 3.1
-Tested up to: 3.5.1
-Stable tag: 3.3
+Tested up to: 3.9-alpha
+Stable tag: 1.0
 
 Manage plugin access permissions across your entire multisite network.
 
@@ -13,16 +13,16 @@ It uses a backend options page to adjust plugin permissions for all the sites in
 
 * Select what plugins sites have access to
 * Choose plugins to Auto-Activate for all new blogs
-* Mass activate/deactivate a plugin on all sites in your network (Very Handy!)
+* Mass activate/deactivate a plugin on all sites in your network
 * Assign special plugin access permissions for specific sites in your network
 * And as Super Admin, you can override all these to activate specific plugins on the sites you choose!
 * Removes the plugin meta row links (Version, Author, Plugin) and any update messages for blog admins
 
 = Development =
 
-* GitHub Repository: [plugin-manager-mu](https://github.com/wp-repository/plugin-manager-mu)
-* Issue-Tracker: [Plugin Manager MU Issues](https://github.com/wp-repository/plugin-manager-mu/issues) **Please use the Issue-Tracker at GitHub!!**
-* Translation: [Translate > Plugin Manager MU](https://translate.foe-services.de/projects/plugin-manager-mu)
+* GitHub Repository: [wp-repository](https://github.com/wp-repository) / [wpmu-plugin-manager-mu](https://github.com/wp-repository/wpmu-plugin-manager)
+* [Issue-Tracker](https://github.com/wp-repository/wpmu-plugin-manager/issues) **Please use the Issue-Tracker on GitHub!!**
+* Translation: [Translate > WPMU Plugin Manager](http://wp-translate.org/projects/wpmu-plugin-manager)
 
 
 == Installation ==
@@ -58,26 +58,5 @@ No, this plugin is only compatible (and useful) with Multisite installs.
 
 == Changelog ==
 
-= 3.3-dev =
-* added build testing via travis-ci.org
-* added custom unit tests @TODO
-* TBD
-
-= 3.2 =
-* "Dirty Fork" -> no renaming at this point
-* added translation support
-* fixes for WP 3.5
-* support for *Pro Sites plugin* is deprecated from v3.2 on - no fixes + removal planned for v3.3
-
-= 3.1.2 =
-* Important reflected cross-site scripting vulnerability fix! Props Matthew Fuller @Mozilla 
-
-= 3.1.1 =
-* Readme updates
-* Pro Sites support
-
-= 3.1 =
-* Fix auto-activate for new blogs
-
-= 3.0 =
-* Complete rewrite for WP 3.1
+= 1.0 =
+* __Forked from [Multisite Plugin Manager](http://wordpress.org/extend/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)

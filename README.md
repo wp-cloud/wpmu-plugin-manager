@@ -1,5 +1,5 @@
 # WPMU Plugin Manager
-__Manage plugin permissions in a WordPress MU installation__
+__Manage plugin permissions in a WordPress multisite installation__
 
 [Homepage][1.1]
 
@@ -43,7 +43,7 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 	WPMU Plugin Manager
 	based on/forked from Multisite Plugin Manager by UglyRobot Web Development (http://uglyrobot.com)
 
-	Copyright (C) 2013 WP-Cloud (http://labs.foe-services.de)
+	Copyright (C) 2013 - 2014 WP-Cloud (http://labs.foe-services.de)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as 
@@ -59,4 +59,4 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 
 ## Changelog
 * __1.0__
-	* __Forked from [Multisite Plugin Manager](http://wordpress.org/extend/plugins/wpc-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)__
+	* __Forked from [Multisite Plugin Manager](http://wordpress.org/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)
