@@ -63,6 +63,7 @@ class WPC_PluginManager {
 	 * 
 	 * @see	add_action()
 	 * @see	add_filter()
+	 * @see	is_admin()
 	 * 
 	 * @return	void
 	 */
@@ -732,7 +733,7 @@ class WPC_PluginManager {
  	 */
 	function action_links( $action_links, $plugin_file, $plugin_data, $context ) {
 		
-		global $psts, $blog_id;
+//		global $psts, $blog_id;
 
 		if ( current_user_can( 'manage_network_plugins' ) ) {
 			return $action_links;
