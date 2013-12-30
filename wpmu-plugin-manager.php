@@ -18,7 +18,7 @@ Network: true
 	Copyright (C) 2013 WP-Cloud (http://labs.foe-services.de)
 
 	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License, version 2, as 
+	it under the terms of the GNU General Public License, version 2, as
 	published by the Free Software Foundation.
 
 	This program is distributed in the hope that it will be useful,
@@ -48,7 +48,7 @@ class WPC_PluginManager {
 
 	/**
 	 * Current version of the plugin.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
 	 * @var		string	$version
@@ -57,14 +57,14 @@ class WPC_PluginManager {
 	
 	/**
 	 * Constructor. Hooks all interactions to initialize the class.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see	add_action()
 	 * @see	add_filter()
 	 * @see	is_admin()
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function __construct() {
@@ -92,15 +92,15 @@ class WPC_PluginManager {
 	
 	/**
 	 * Add admin menu item
-	 * 
+	 *
 	 * @since	0.1.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		add_action()
 	 * @see		add_submenu_page()
 	 * @action	network_admin_menu
 	 * @hook	filter	wpc_pm_cap Defaults to 'manage_network_plugins'
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function network_admin_menu() {
@@ -120,13 +120,13 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		get_current_screen()
 	 * @action	load-plugins_page_plugin-management
-	 * 
+	 *
 	 * @return	string
  	 */
 	public function help_tabs() {
@@ -144,12 +144,12 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	0.1.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		_e()
-	 * 
+	 *
 	 * @return	string
 	 */
 	public function option_tab() { ?>
@@ -166,16 +166,16 @@ class WPC_PluginManager {
 		<p>
 			<strong><?php _e( 'Mass Activation/Deactivation', 'wpmu-plugin-manager' ); ?></strong>
 			- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'wpmu-plugin-manager' ); ?></p>
-	<?php 
+	<?php
 	
 	} // END option_tab()
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		_e()
 	 * @see		current_user_can()
 	 * @see		get_plugins()
@@ -184,7 +184,7 @@ class WPC_PluginManager {
 	 * @see		is_plugin_active_for_network()
 	 * @see		submit_button()
 	 * @uses	self::process_form()
-	 * 
+	 *
 	 * @return	string
  	 */
 	public function admin_page() {
@@ -331,14 +331,14 @@ class WPC_PluginManager {
 
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		remove_all_actions()
 	 * @action	plugin_row_meta
-	 * 
+	 *
 	 * @param	array	$plugin_meta
 	 * @param	array	$plugin_file
 	 * @return	array
@@ -360,14 +360,14 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		remove_all_actions()
 	 * @action	admin_init
-	 * 
+	 *
 	 * @return	void
  	 */
 	function remove_plugin_update_row() {
@@ -379,13 +379,13 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		update_site_option()
 	 * @uses	self::mass_deactivate()
-	 * 
+	 *
 	 * @return	void
  	 */
 	function process_form() {
@@ -432,10 +432,10 @@ class WPC_PluginManager {
 	//options added to wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		get_plugins()
@@ -443,7 +443,7 @@ class WPC_PluginManager {
 	 * @see		is_network_only_plugin()
 	 * @see		is_plugin_active_for_network()
 	 * @action	blog_options_form
-	 * 
+	 *
 	 * @param	string	$blog_id
 	 * @return	string
  	 */
@@ -523,13 +523,13 @@ class WPC_PluginManager {
 	//process options from wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		update_option()
 	 * @action	wpmu_update_blog_options
-	 * 
+	 *
 	 * @return	void
  	 */
 	public function blog_options_form_process() {
@@ -550,16 +550,16 @@ class WPC_PluginManager {
 	//activate on new blog
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		get_site_option()
 	 * @see		switch_to_blog()
 	 * @see		activate_plugins()
 	 * @see		restore_current_blog()
 	 * @action	wpmu_new_blog
-	 * 
+	 *
 	 * @param	string	$blog_id
 	 * @return	void
  	 */
@@ -581,17 +581,17 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		esc_html()
 	 * @see		switch_to_blog()
 	 * @see		activate_plugins()
 	 * @see		restore_current_blog()
-	 * 
+	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
@@ -628,17 +628,17 @@ class WPC_PluginManager {
 	
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		esc_html()
 	 * @see		switch_to_blog()
 	 * @see		deactivate_plugins()
 	 * @see		restore_current_blog()
-	 * 
+	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
@@ -676,14 +676,14 @@ class WPC_PluginManager {
 	//remove plugins with no user control
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
-	 * 
+	 *
 	 * @param	string	$all_plugins
 	 * @return	void
  	 */
@@ -714,15 +714,15 @@ class WPC_PluginManager {
 	//plugin activate links
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
 	 * @action	plugin_action_links
-	 * 
+	 *
 	 * @global	?	$psts
 	 * @global	string	$blog_id
 	 * @param	array	$action_links
@@ -756,12 +756,12 @@ class WPC_PluginManager {
 	//use jquery to remove associated checkboxes to prevent mass activation (usability, not security)
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		esc_js()
-	 * 
+	 *
 	 * @param	string	$plugin_file
 	 * @return	void
  	 */
@@ -780,15 +780,15 @@ class WPC_PluginManager {
 	will see this though! */
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
 	 * @see		deactivate_plugins()
-	 * 
+	 *
 	 * @param	array	$active_plugins
 	 * @return	array
  	 */
@@ -824,14 +824,14 @@ class WPC_PluginManager {
 	
 	/**
 	 * Load the plugin's textdomain hooked to 'plugins_loaded'.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		load_plugin_textdomain()
 	 * @see		plugin_basename()
 	 * @action	plugins_loaded
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function load_plugin_textdomain() {
@@ -848,10 +848,10 @@ class WPC_PluginManager {
 
 /**
  * Instantiate the main class
- * 
+ *
  * @since	1.0.0
  * @access	public
- * 
+ *
  * @var	object	$wpc_pm holds the instantiated class {@uses WPC_PluginManager}
  */
 $wpc_pm = new WPC_PluginManager();
