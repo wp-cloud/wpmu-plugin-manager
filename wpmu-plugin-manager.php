@@ -18,7 +18,7 @@ Network: true
 	Copyright (C) 2013 WP-Cloud (http://labs.foe-services.de)
 
 	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License, version 2, as 
+	it under the terms of the GNU General Public License, version 2, as
 	published by the Free Software Foundation.
 
 	This program is distributed in the hope that it will be useful,
@@ -48,63 +48,63 @@ class WPC_PluginManager {
 
 	/**
 	 * Current version of the plugin.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
 	 * @var		string	$version
 	 */
 	public $version = '1.0-beta';
-	
+
 	/**
 	 * Constructor. Hooks all interactions to initialize the class.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see	add_action()
 	 * @see	add_filter()
 	 * @see	is_admin()
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function __construct() {
-		
+
 		if ( !is_admin() ) {
 			return;
 		}
-		
+
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ) );
-		
-		
-		
+
+
+
 		add_action( 'wpmu_new_blog', array( $this, 'new_blog' ) );
 		add_action( 'wpmueditblogaction', array( $this, 'blog_options_form' ) );
 		add_action( 'wpmu_update_blog_options', array( $this, 'blog_options_form_process' ) );
 		add_action( 'admin_init', array( $this, 'remove_plugin_update_row' ) );
-		
+
 		add_filter( 'plugin_row_meta' , array( $this, 'remove_plugin_meta' ), 10, 2 );
 		add_filter( 'all_plugins', array( $this, 'remove_plugins' ) );
 		add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 4 );
 		add_filter( 'active_plugins', array( $this, 'check_activated' ) );
-		
+
 	} // END __construct()
-	
+
 	/**
 	 * Add admin menu item
-	 * 
+	 *
 	 * @since	0.1.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		add_action()
 	 * @see		add_submenu_page()
 	 * @action	network_admin_menu
 	 * @hook	filter	wpc_pm_cap Defaults to 'manage_network_plugins'
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function network_admin_menu() {
-		
+
 		add_submenu_page(
 			'plugins.php',
 			__( 'Plugin Management', 'wpmu-plugin-manager' ),
@@ -113,24 +113,24 @@ class WPC_PluginManager {
 			'plugin-management',
 			array( $this, 'admin_page' )
 		);
-		
+
 		add_action( 'load-plugins_page_plugin-management', array( $this, 'help_tabs' ) );
-		
+
 	} // END network_admin_menu()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		get_current_screen()
 	 * @action	load-plugins_page_plugin-management
-	 * 
+	 *
 	 * @return	string
  	 */
 	public function help_tabs() {
-		
+
 		$screen = get_current_screen();
 		$screen->add_help_tab(
 			array(
@@ -139,17 +139,17 @@ class WPC_PluginManager {
 				'callback'  => array( $this, 'option_tab')
 			)
 		);
-		
+
 	} // END help_tabs()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	0.1.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		_e()
-	 * 
+	 *
 	 * @return	string
 	 */
 	public function option_tab() { ?>
@@ -166,16 +166,16 @@ class WPC_PluginManager {
 		<p>
 			<strong><?php _e( 'Mass Activation/Deactivation', 'wpmu-plugin-manager' ); ?></strong>
 			- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'wpmu-plugin-manager' ); ?></p>
-	<?php 
-	
+	<?php
+
 	} // END option_tab()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		_e()
 	 * @see		current_user_can()
 	 * @see		get_plugins()
@@ -184,11 +184,11 @@ class WPC_PluginManager {
 	 * @see		is_plugin_active_for_network()
 	 * @see		submit_button()
 	 * @uses	self::process_form()
-	 * 
+	 *
 	 * @return	string
  	 */
 	public function admin_page() {
-		
+
 		if ( !current_user_can( 'manage_network_plugins' ) ) {
 			die( 'Nice Try!' );
 		}
@@ -272,7 +272,7 @@ class WPC_PluginManager {
 							continue;
 						}
 					?>
-					<tbody>	
+					<tbody>
 						<tr>
 							<td>
 								<?php echo $p['Name']?>
@@ -326,83 +326,83 @@ class WPC_PluginManager {
 			</form>
 		</div>
 			<?php
-			
+
 	} //end admin_page()
 
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		remove_all_actions()
 	 * @action	plugin_row_meta
-	 * 
+	 *
 	 * @param	array	$plugin_meta
 	 * @param	array	$plugin_file
 	 * @return	array
  	 */
 	public function remove_plugin_meta( $plugin_meta, $plugin_file ) {
-		
+
 		if ( current_user_can( 'manage_network_plugins' ) ) {
-			
+
 			return $plugin_meta;
-			
+
 		} else {
-			
+
 			remove_all_actions( "after_plugin_row_$plugin_file" );
 			return array();
-			
+
 		}
-		
+
 	} // END remove_plugin_meta()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		remove_all_actions()
 	 * @action	admin_init
-	 * 
+	 *
 	 * @return	void
  	 */
 	function remove_plugin_update_row() {
-		
+
 		if ( !current_user_can( 'manage_network_plugins' ) )
 			remove_all_actions( 'after_plugin_row' );
-		
+
 	} // END remove_plugin_update_row()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		update_site_option()
 	 * @uses	self::mass_deactivate()
-	 * 
+	 *
 	 * @return	void
  	 */
 	function process_form() {
-		
+
 		if ( isset( $_GET['mass_deactivate'] ) ) {
 			$plugin = $_GET['mass_deactivate'];
 			$this->mass_deactivate( $plugin );
 		}
-		
+
 		if ( isset( $_POST['control'] ) ) {
-			
+
 			//create blank arrays
 			$user_control = array();
 			$auto_activate = array();
-			
+
 			foreach ( $_POST['control'] as $plugin => $value ) {
-				
+
 				if ( $value == 'none' ) {
 					//do nothing
 				} else if ( $value == 'all' ) {
@@ -410,9 +410,9 @@ class WPC_PluginManager {
 				} else if ( $value == 'auto' ) {
 					$auto_activate[] = $plugin;
 				}
-				
+
 			}
-			
+
 			update_site_option( 'pm_user_control_list', array_unique( $user_control ) );
 			update_site_option( 'pm_auto_activate_list', array_unique( $auto_activate ) );
 
@@ -426,16 +426,16 @@ class WPC_PluginManager {
 			}
 
 		}
-		
+
 	} // END process_form()
 
 	//options added to wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		get_plugins()
@@ -443,12 +443,12 @@ class WPC_PluginManager {
 	 * @see		is_network_only_plugin()
 	 * @see		is_plugin_active_for_network()
 	 * @action	blog_options_form
-	 * 
+	 *
 	 * @param	string	$blog_id
 	 * @return	string
  	 */
 	function blog_options_form( $blog_id ) {
-		
+
 		$plugins =			get_plugins();
 		$override_plugins =	(array)get_blog_option( $blog_id, 'pm_plugin_override_list' );
 		?>
@@ -517,25 +517,25 @@ class WPC_PluginManager {
 			<?php
 		}
 		echo '</table>';
-		
+
 	} // END blog_options_form()
 
 	//process options from wpmu-blogs.php edit page. Overrides sitewide control settings for an individual blog.
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		update_option()
 	 * @action	wpmu_update_blog_options
-	 * 
+	 *
 	 * @return	void
  	 */
 	public function blog_options_form_process() {
-		
+
 		$override_plugins = array();
-		
+
 		if ( is_array( $_POST['plugins'] ) ) {
 			foreach ( (array)$_POST['plugins'] as $plugin => $value ) {
 				$override_plugins[] = $plugin;
@@ -544,62 +544,62 @@ class WPC_PluginManager {
 		} else {
 			update_option( 'pm_plugin_override_list', array() );
 		}
-		
+
 	} // END blog_options_form_process()
 
 	//activate on new blog
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		get_site_option()
 	 * @see		switch_to_blog()
 	 * @see		activate_plugins()
 	 * @see		restore_current_blog()
 	 * @action	wpmu_new_blog
-	 * 
+	 *
 	 * @param	string	$blog_id
 	 * @return	void
  	 */
 	function new_blog( $blog_id ) {
-		
+
 		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 		$auto_activate = (array)get_site_option( 'pm_auto_activate_list' );
-		
-		if ( count( $auto_activate ) ) {
-			
+
+		if ( count($auto_activate) && $auto_activate[0] !== 'EMPTY') {
+
 			switch_to_blog( $blog_id );
 			activate_plugins( $auto_activate, '', false ); //silently activate any plugins
 			restore_current_blog();
-			
+
 		}
-		
+
 	} // END new_blog()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		esc_html()
 	 * @see		switch_to_blog()
 	 * @see		activate_plugins()
 	 * @see		restore_current_blog()
-	 * 
+	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
  	 */
 	public function mass_activate( $plugin ) {
-		
+
 		global $wpdb;
-		
+
 		set_time_limit( 120 );
 
 		$blogs = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0" );
@@ -623,30 +623,30 @@ class WPC_PluginManager {
 			</div>
 		<?php
 		}
-		
+
 	} // END mass_activate()
-	
+
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		__()
 	 * @see		_e()
 	 * @see		esc_html()
 	 * @see		switch_to_blog()
 	 * @see		deactivate_plugins()
 	 * @see		restore_current_blog()
-	 * 
+	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
  	 */
 	function mass_deactivate( $plugin ) {
-		
+
 		global $wpdb;
-		
+
 		set_time_limit( 120 );
 		$blogs = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs} WHERE site_id = {$wpdb->siteid} AND spam = 0" );
 
@@ -670,25 +670,25 @@ class WPC_PluginManager {
 			</div>
 		<?php
 		}
-		
+
 	} // END mass_deactivate()
 
 	//remove plugins with no user control
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
-	 * 
+	 *
 	 * @param	string	$all_plugins
 	 * @return	void
  	 */
 	function remove_plugins( $all_plugins ) {
-		
+
 		if ( current_user_can( 'manage_network_plugins' ) ) { //don't filter siteadmin
 			return $all_plugins;
 		}
@@ -698,31 +698,31 @@ class WPC_PluginManager {
 		$override_plugins	= (array)get_option( 'pm_plugin_override_list' );
 
 		foreach ( (array)$all_plugins as $plugin_file => $plugin_data ) {
-			
+
 			if ( in_array( $plugin_file, $user_control ) || in_array( $plugin_file, $auto_activate ) || in_array( $plugin_file, $override_plugins ) ) {
 				//do nothing - leave it in
 			} else {
 				unset( $all_plugins[ $plugin_file ] ); //remove plugin
 			}
-			
+
 		}
-		
+
 		return $all_plugins;
-		
+
 	} // END remove_plugins()
 
 	//plugin activate links
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
 	 * @action	plugin_action_links
-	 * 
+	 *
 	 * @global	?	$psts
 	 * @global	string	$blog_id
 	 * @param	array	$action_links
@@ -732,7 +732,7 @@ class WPC_PluginManager {
 	 * @return	void
  	 */
 	function action_links( $action_links, $plugin_file, $plugin_data, $context ) {
-		
+
 //		global $psts, $blog_id;
 
 		if ( current_user_can( 'manage_network_plugins' ) ) {
@@ -748,27 +748,27 @@ class WPC_PluginManager {
 				return $action_links;
 			}
 		}
-		
+
 		return $action_links;
-		
+
 	} // END action_links()
 
 	//use jquery to remove associated checkboxes to prevent mass activation (usability, not security)
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		esc_js()
-	 * 
+	 *
 	 * @param	string	$plugin_file
 	 * @return	void
  	 */
 	public function remove_checks( $plugin_file ) {
-		
+
 		echo '<script type="text/javascript">jQuery("input:checkbox[value=\'' . esc_js( $plugin_file ). '\']).remove();</script>';
-		
+
 	} // END remove_checks()
 
 	/*
@@ -780,20 +780,20 @@ class WPC_PluginManager {
 	will see this though! */
 	/**
 	 * @todo
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		current_user_can()
 	 * @see		get_site_option()
 	 * @see		get_option()
 	 * @see		deactivate_plugins()
-	 * 
+	 *
 	 * @param	array	$active_plugins
 	 * @return	array
  	 */
 	function check_activated( $active_plugins ) {
-		
+
 		if ( current_user_can( 'manage_network_plugins' ) ) {
 			return $active_plugins;
 		}
@@ -808,50 +808,50 @@ class WPC_PluginManager {
 		$override_plugins	= (array)get_option( 'pm_plugin_override_list' );
 
 		foreach ( (array)$active_plugins as $plugin_file => $plugin_data ) {
-			
+
 			if ( in_array( $plugin_file, $user_control ) || in_array( $plugin_file, $auto_activate ) || in_array( $plugin_file, $override_plugins ) ) {
 				//do nothing - leave it in
 			} else {
 				deactivate_plugins( $plugin_file, true ); //silently remove any plugins
 				unset( $active_plugins[ $plugin_file ] );
 			}
-			
+
 		}
 
 		return $active_plugins;
-		
+
 	} // END check_activated()
-	
+
 	/**
 	 * Load the plugin's textdomain hooked to 'plugins_loaded'.
-	 * 
+	 *
 	 * @since	1.0.0
 	 * @access	public
-	 * 
+	 *
 	 * @see		load_plugin_textdomain()
 	 * @see		plugin_basename()
 	 * @action	plugins_loaded
-	 * 
+	 *
 	 * @return	void
 	 */
 	public function load_plugin_textdomain() {
-		
+
 		load_plugin_textdomain(
 			'wpmu-plugin-manager',
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages/'
 		);
-		
+
 	} // END load_plugin_textdomain()
 
 } // END class WPC_PluginManager
 
 /**
  * Instantiate the main class
- * 
+ *
  * @since	1.0.0
  * @access	public
- * 
+ *
  * @var	object	$wpc_pm holds the instantiated class {@uses WPC_PluginManager}
  */
 $wpc_pm = new WPC_PluginManager();
