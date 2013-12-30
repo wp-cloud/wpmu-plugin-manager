@@ -1,181 +1,147 @@
-# Translation of Multisite Plugin Manager in German
-# This file is distributed under the same license as the Multisite Plugin Manager package.
+# Translation of WPMU Plugin Manager in German
+# This file is distributed under the same license as the WPMU Plugin Manager package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2013-03-14 13:58:10+0000\n"
+"PO-Revision-Date: 2013-12-30 07:23:05+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: translate.foe-services.de/ReGlot/0.1\n"
-"Project-Id-Version: Multisite Plugin Manager\n"
-"Language-Team: Translate.foe-services.de <translate@foe-services.de>\n"
-"Language: German\n"
+"X-Generator: GlotPress/0.1\n"
+"Project-Id-Version: WPMU Plugin Manager\n"
 
-#: plugin-manager.php:388
-msgid "%s has been MASS DEACTIVATED."
-msgstr "%s wurde auf allen Seiten deaktiviert."
+#: wpmu-plugin-manager.php:111
+msgid "Manage"
+msgstr "Manage"
 
-#: plugin-manager.php:369
-msgid "%s has been MASS ACTIVATED."
-msgstr "%s wurde auf allen Seiten aktiviert."
+msgid "WPMU Plugin Manager"
+msgstr "WPMU Plugin Manager"
 
-#: plugin-manager.php:109
-msgid "Requires at least: %s"
-msgstr "Benötigt mindestens: %s"
+msgid "http://wordpress.org/plugins/wpmu-plugin-manager/"
+msgstr "http://wordpress.org/plugins/wpmu-plugin-manager/"
 
-#: plugin-manager.php:110
-msgid "Tested up to: %s"
-msgstr "Getestet bis: %s"
+msgid "WP-Cloud"
+msgstr "WP-Cloud"
 
-#: plugin-manager.php:113
-msgid "Languages"
-msgstr "Sprachen"
+msgid "http://wp-cloud.de"
+msgstr "http://wp-cloud.de"
 
-#: plugin-manager.php:115
-msgid "Help to translate at %s"
-msgstr "Hilf bei der Übersetzung unter %s"
-
-#: plugin-manager.php:117
-msgid "License"
-msgstr "Lizenz"
-
-#: plugin-manager.php:119
-msgid "Support the development"
-msgstr "Unterstütze die Entwicklung"
-
-#: plugin-manager.php:121
-msgid "You are probably making money with this plugin. Why not send me a small donation in honor of the time I put into this? Thanks!"
-msgstr "Du machst wahrscheinlich Geld mit diesem Plugin. Warum sendest du mir nicht eine kleine Spende als Anerkennung der Zeit, die ich hineingesteckt habe? Danke!"
-
-#: plugin-manager.php:68
-msgid "Options"
-msgstr "Optionen"
-
-#: plugin-manager.php:73
-msgid "About"
-msgstr "Über"
-
-#: plugin-manager.php:102
-msgid "Development"
-msgstr "Entwicklung"
-
-#: plugin-manager.php:104
-msgid "Main Developer"
-msgstr "Haupt-Entwickler"
-
-#: plugin-manager.php:166
-msgid "Mass Deactivate"
-msgstr "Massen-Deaktivierung"
-
-#: plugin-manager.php:214
-msgid "None"
-msgstr "Keiner"
-
-#: plugin-manager.php:216
-msgid "Pro Sites"
-msgstr "Pro Sites"
-
-#: plugin-manager.php:218
-msgid "All Users"
-msgstr "Alle Benutzer"
-
-#: plugin-manager.php:219
-msgid "Auto-Activate (All Users)"
-msgstr "Auto-Aktivierung (Alle Benutzer)"
-
-#: plugin-manager.php:223
-msgid "Activate All"
-msgstr "Alle aktivieren"
-
-#: plugin-manager.php:224
-msgid "Deactivate All"
-msgstr "Alle deaktivieren"
-
-#: plugin-manager.php:298
-msgid "Plugin Override Options"
-msgstr "Plugin-Optionen"
-
-#: plugin-manager.php:300
-msgid "Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings."
-msgstr "Hier aktivierte Plugins sind für die Seite verfügbar unabhängig von der Einstellung unter %sPlugin Management%s. Deaktiviere hier um zum Netzwerk-weiten Standard zurück zu kehren."
-
-#: plugin-manager.php:305
-msgid "Blog users may activate/deactivate"
-msgstr "Seitenbenutzer dürfen aktivieren/deaktivieren"
-
-#: plugin-manager.php:321
-msgid "Enable"
-msgstr "Aktivieren"
-
-#: plugin-manager.php:372
-msgid "Failed to mass activate: error selecting blogs"
-msgstr "Massen-Aktivierung fehlgeschlagen: Error bei der Auswahl der Seiten"
-
-#: plugin-manager.php:390
-msgid "Failed to mass deactivate: error selecting blogs"
-msgstr "Massen-Deaktivierung fehlgeschlagen: Error bei der Auswahl der Seiten"
-
-#: plugin-manager.php:60
+#: wpmu-plugin-manager.php:110 wpmu-plugin-manager.php:207
 msgid "Plugin Management"
 msgstr "Plugin-Management"
 
-#: plugin-manager.php:151
-msgid "Manage Plugins"
-msgstr "Plugin-Management"
+#: wpmu-plugin-manager.php:138
+msgid "Options"
+msgstr "Optionen"
 
-#: plugin-manager.php:154
-msgid "Settings Saved"
-msgstr "Einstellungen gespeichert"
-
-#: plugin-manager.php:79
+#: wpmu-plugin-manager.php:157
 msgid "Auto Activation"
 msgstr "Auto-Aktivierung"
 
-#: plugin-manager.php:80
+#: wpmu-plugin-manager.php:158
 msgid "When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs."
 msgstr "Ist Auto-Aktivierung für ein Plugin gesetzt, wird dieses auf jeder neu erstellte Seite automatisch aktiviert. Diese Funktion beeinflusst bestehende Seiten nicht."
 
-#: plugin-manager.php:82 plugin-manager.php:164 plugin-manager.php:305
+#: wpmu-plugin-manager.php:162 wpmu-plugin-manager.php:231
+#: wpmu-plugin-manager.php:253 wpmu-plugin-manager.php:464
+#: wpmu-plugin-manager.php:480
 msgid "User Control"
 msgstr "Benutzersteuerung"
 
-#: plugin-manager.php:84
-msgid "Choose if all users, pro sites only, or no one will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it."
-msgstr "Wähle ob alle Benutzer, nur Pro Sites, oder Keiner Plugins über das <cite>Plugins</cite> Menü aktivieren/deaktivieren darf. Bei einer Deaktivierung können Benutzer das Plugin so lange weiter nutzen bis sie es deaktivieren."
-
-#: plugin-manager.php:86
+#: wpmu-plugin-manager.php:163
 msgid "When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it."
 msgstr "Wenn Benutzersteuerung aktiviert ist, können Benutzer selbstständig Plugins über das <cite>Plugin</cite> Menü aktivieren und deaktivieren. Bei einer Deaktivierung können Benutzer das Plugin so lange weiter nutzen bis sie es deaktivieren."
 
-#: plugin-manager.php:89
+#: wpmu-plugin-manager.php:167
 msgid "Mass Activation/Deactivation"
 msgstr "Massen-Aktivierung/-Deaktivierung"
 
-#: plugin-manager.php:90
+#: wpmu-plugin-manager.php:168
 msgid "Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the \"Network Activate\" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option."
 msgstr "Massen-Aktivierung und Massen-Deaktivierung Bottons aktivieren/deaktivieren das Plugin für alle Seiten. Diese Funktion unterscheidet sich von \"Für alle Seiten aktivieren\". Benutzer können das Plugin später deaktivieren und es beeinflusst nur bestehende Seiten. Benutzersteuerung wird ignoriert."
 
-#: plugin-manager.php:161 plugin-manager.php:306
+#: wpmu-plugin-manager.php:212
+msgid "Settings Saved"
+msgstr "Einstellungen gespeichert"
+
+#: wpmu-plugin-manager.php:222 wpmu-plugin-manager.php:244
+#: wpmu-plugin-manager.php:467 wpmu-plugin-manager.php:483
 msgid "Name"
 msgstr "Name"
 
-#: plugin-manager.php:162 plugin-manager.php:307
+#: wpmu-plugin-manager.php:225 wpmu-plugin-manager.php:247
+#: wpmu-plugin-manager.php:470 wpmu-plugin-manager.php:486
 msgid "Version"
 msgstr "Version"
 
-#: plugin-manager.php:163 plugin-manager.php:308
+#: wpmu-plugin-manager.php:228 wpmu-plugin-manager.php:250
+#: wpmu-plugin-manager.php:473 wpmu-plugin-manager.php:489
 msgid "Author"
 msgstr "Autor"
 
-#: plugin-manager.php:164
+#: wpmu-plugin-manager.php:230 wpmu-plugin-manager.php:252
 msgid "Users may activate/deactivate"
 msgstr "Benutzer darf selbstständig aktivieren/deaktivieren"
 
-#: plugin-manager.php:165
+#: wpmu-plugin-manager.php:234 wpmu-plugin-manager.php:256
 msgid "Mass Activate"
 msgstr "Massen-Aktivierung"
 
-#: plugin-manager.php:5
-msgid "The essential plugin for every multisite install! Manage plugin access permissions across your entire multisite network."
-msgstr "Das essentielle Plugin für jede Multisite installation! Regel Zugriffsrechte für die Plugins deines Netzwerks."
+#: wpmu-plugin-manager.php:237 wpmu-plugin-manager.php:259
+msgid "Mass Deactivate"
+msgstr "Massen-Deaktivierung"
+
+#: wpmu-plugin-manager.php:309
+msgid "None"
+msgstr "Keiner"
+
+#: wpmu-plugin-manager.php:310
+msgid "All Users"
+msgstr "Alle Benutzer"
+
+#: wpmu-plugin-manager.php:311
+msgid "Auto-Activate (All Users)"
+msgstr "Auto-Aktivierung (Alle Benutzer)"
+
+#: wpmu-plugin-manager.php:316
+msgid "Activate All"
+msgstr "Alle aktivieren"
+
+#: wpmu-plugin-manager.php:319
+msgid "Deactivate All"
+msgstr "Alle deaktivieren"
+
+#: wpmu-plugin-manager.php:456
+msgid "Plugin Override Options"
+msgstr "Plugin-Optionen"
+
+#: wpmu-plugin-manager.php:458
+msgid "Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings."
+msgstr "Hier aktivierte Plugins sind für die Seite verfügbar unabhängig von der Einstellung unter %sPlugin Management%s. Deaktiviere hier um zum Netzwerk-weiten Standard zurück zu kehren."
+
+#: wpmu-plugin-manager.php:463 wpmu-plugin-manager.php:479
+msgid "Blog users may activate/deactivate"
+msgstr "Seitenbenutzer dürfen aktivieren/deaktivieren"
+
+#: wpmu-plugin-manager.php:504
+msgid "Enable"
+msgstr "Aktivieren"
+
+#: wpmu-plugin-manager.php:614
+msgid "%s has been MASS ACTIVATED."
+msgstr "%s wurde auf allen Seiten aktiviert."
+
+#: wpmu-plugin-manager.php:621
+msgid "Failed to mass activate: error selecting blogs"
+msgstr "Massen-Aktivierung fehlgeschlagen: Error bei der Auswahl der Seiten"
+
+#: wpmu-plugin-manager.php:661
+msgid "%s has been MASS DEACTIVATED."
+msgstr "%s wurde auf allen Seiten deaktiviert."
+
+#: wpmu-plugin-manager.php:668
+msgid "Failed to mass deactivate: error selecting blogs"
+msgstr "Massen-Deaktivierung fehlgeschlagen: Error bei der Auswahl der Seiten"
+
+msgid "Manage plugin access permissions across your entire multisite network."
+msgstr "Verwalte den Zugriff auf Plugins im Multisite Netzwerk"
