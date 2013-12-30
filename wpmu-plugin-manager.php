@@ -3,7 +3,7 @@
 Plugin Name: WPMU Plugin Manager
 Plugin URI: http://wordpress.org/plugins/wpmu-plugin-manager/
 Description: Manage plugin access permissions across your entire multisite network.
-Version: 1.0-beta
+Version: 1.0
 Author: WP-Cloud
 Author URI: http://wp-cloud.de
 License: GPLv2
@@ -34,7 +34,7 @@ Network: true
  * @copyright	Copyright (c) 2013, WP-Cloud
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  * @package		WPC\PluginManager
- * @version		1.0-beta
+ * @version		1.0
  */
 
 //avoid direct calls to this file
@@ -53,7 +53,7 @@ class WPC_PluginManager {
 	 * @access	public
 	 * @var		string	$version
 	 */
-	public $version = '1.0-beta';
+	public $version = '1.0';
 	
 	/**
 	 * Constructor. Hooks all interactions to initialize the class.
