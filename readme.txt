@@ -1,9 +1,11 @@
 === WPMU Plugin Manager ===
-Contributors: uglyrobot
+Contributors: cfoellmann, wp-repository
 Tags: multisite, wpmu, plugins
 Requires at least: 3.1
 Tested up to: 3.9-alpha
 Stable tag: 1.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Manage plugin access permissions across your entire multisite network.
 
@@ -59,4 +61,4 @@ No, this plugin is only compatible (and useful) with Multisite installs.
 == Changelog ==
 
 = 1.0 =
-* __Forked from [Multisite Plugin Manager](http://wordpress.org/extend/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)
+* __Forked from [Multisite Plugin Manager](http://wordpress.org/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)

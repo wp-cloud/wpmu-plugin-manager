@@ -6,7 +6,7 @@ __Manage plugin permissions in a WordPress multisite installation__
 | WordPress					| Version			| *		| Development				|					|
 | ----:						| :----				| :---: | :----						| :----				|
 | Requires at least:		| __3.1__			| *		| [GitHub-Repository][1.3]	| [Translate][1.7]	|
-| Tested up to:				| __3.9-alpha__			| *		| [Issue-Tracker][1.4]		|					|
+| Tested up to:				| __3.9-alpha__		| *		| [Issue-Tracker][1.4]		|					|
 | Current stable release:	| __[1.0][1.5]__	| *		| Current dev version:		| [1.1-beta][1.8]	|
 
 [1.1]: https://github.com/wp-repository/wpmu-plugin-manager
