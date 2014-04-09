@@ -58,5 +58,7 @@ __[GPLv2](http://www.gnu.org/licenses/gpl-2.0.html)__
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Changelog
+* __1.1__
+	* TBD
 * __1.0__
 	* __Forked from [Multisite Plugin Manager](http://wordpress.org/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)

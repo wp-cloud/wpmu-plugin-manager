@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/plugins/wpmu-plugin-manager/
 Description: Manage plugin access permissions across your entire multisite network.
 Version: 1.1-beta
 Author: WP-Cloud
-Author URI: http://wp-cloud.de
+Author URI: http://dev.wp-cloud.org
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: wpmu-plugin-manager
@@ -15,7 +15,7 @@ Network: true
 	WPMU Plugin Manager
 	based on/forked from Multisite Plugin Manager by UglyRobot Web Development (http://uglyrobot.com)
 
-	Copyright (C) 2013 WP-Cloud (http://labs.foe-services.de)
+	Copyright (C) 2013-2014 WP-Cloud (http://dev.wp-cloud.org)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -30,20 +30,25 @@ Network: true
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author		WP-Cloud <code@wp-cloud.de>
- * @copyright	Copyright (c) 2013, WP-Cloud
+ * @author		WP-Cloud <code@wp-cloud.org>
+ * @copyright	Copyright (c) 2013-2014, WP-Cloud
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  * @package		WPC\PluginManager
  * @version		1.1-beta
  */
 
 //avoid direct calls to this file
-if ( ! function_exists( 'add_filter' ) ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
+if ( !defined( 'ABSPATH' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
 
+/**
+ * Main class to run the plugin
+ * 
+ * @since	1.0.0
+ */
 class WPC_PluginManager {
 
 	/**
@@ -56,6 +61,15 @@ class WPC_PluginManager {
 	public $version = '1.1-beta';
 	
 	/**
+	 * Hold the minimum permission to access plugin
+	 *
+	 * @since	1.0.0
+	 * @access	public
+	 * @var		string	$permission
+	 */
+	public $permission;
+	
+	/**
 	 * Constructor. Hooks all interactions to initialize the class.
 	 *
 	 * @since	1.0.0
@@ -64,6 +78,7 @@ class WPC_PluginManager {
 	 * @see	add_action()
 	 * @see	add_filter()
 	 * @see	is_admin()
+	 * @see apply_filters()
 	 *
 	 * @return	void
 	 */
@@ -73,12 +88,11 @@ class WPC_PluginManager {
 			return;
 		}
 		
+		$this->permission = apply_filters( 'wpc_pm_cap', 'manage_network_plugins' );
+		
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ) );
-		
-		
-		
-		add_action( 'wpmu_new_blog', array( $this, 'new_blog' ) );
+		add_action( 'wpmu_new_blog', array( $this, 'new_blog' ), 50 );
 		add_action( 'wpmueditblogaction', array( $this, 'blog_options_form' ) );
 		add_action( 'wpmu_update_blog_options', array( $this, 'blog_options_form_process' ) );
 		add_action( 'admin_init', array( $this, 'remove_plugin_update_row' ) );
@@ -86,7 +100,7 @@ class WPC_PluginManager {
 		add_filter( 'plugin_row_meta' , array( $this, 'remove_plugin_meta' ), 10, 2 );
 		add_filter( 'all_plugins', array( $this, 'remove_plugins' ) );
 		add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 4 );
-		add_filter( 'active_plugins', array( $this, 'check_activated' ) );
+		// add_filter( 'active_plugins', array( $this, 'check_activated' ) );
 		
 	} // END __construct()
 	
@@ -99,7 +113,6 @@ class WPC_PluginManager {
 	 * @see		add_action()
 	 * @see		add_submenu_page()
 	 * @action	network_admin_menu
-	 * @hook	filter	wpc_pm_cap Defaults to 'manage_network_plugins'
 	 *
 	 * @return	void
 	 */
@@ -109,7 +122,7 @@ class WPC_PluginManager {
 			'plugins.php',
 			__( 'Plugin Management', 'wpmu-plugin-manager' ),
 			__( 'Manage', 'wpmu-plugin-manager' ),
-			apply_filters( 'wpc_pm_cap', 'manage_network_plugins' ),
+			$this->permission,
 			'plugin-management',
 			array( $this, 'admin_page' )
 		);
@@ -189,7 +202,7 @@ class WPC_PluginManager {
  	 */
 	public function admin_page() {
 		
-		if ( !current_user_can( 'manage_network_plugins' ) ) {
+		if ( !current_user_can( $this->permission ) ) {
 			die( 'Nice Try!' );
 		}
 
@@ -261,9 +274,9 @@ class WPC_PluginManager {
 						</tr>
 					</tfoot>
 					<?php
-					$plugins =			get_plugins();
-					$auto_activate =	(array)get_site_option( 'pm_auto_activate_list' );
-					$user_control =		(array)get_site_option( 'pm_user_control_list' );
+					$plugins		= get_plugins();
+					$auto_activate	= (array)get_site_option( 'pm_auto_activate_list' );
+					$user_control	= (array)get_site_option( 'pm_user_control_list' );
 
 					foreach ( $plugins as $file => $p ) {
 
@@ -286,8 +299,8 @@ class WPC_PluginManager {
 							<td>
 								<?php
 								echo '<select name="control[' . $file . ']" />'."\n";
-								$u_checked =	in_array( $file, $user_control );
-								$auto_checked =	in_array( $file, $auto_activate );
+								$u_checked		= in_array( $file, $user_control );
+								$auto_checked	= in_array( $file, $auto_activate );
 
 								if ( $u_checked ) {
 									$n_opt = '';
@@ -345,7 +358,7 @@ class WPC_PluginManager {
  	 */
 	public function remove_plugin_meta( $plugin_meta, $plugin_file ) {
 		
-		if ( current_user_can( 'manage_network_plugins' ) ) {
+		if ( current_user_can( $this->permission ) ) {
 			
 			return $plugin_meta;
 			
@@ -372,7 +385,7 @@ class WPC_PluginManager {
  	 */
 	function remove_plugin_update_row() {
 		
-		if ( !current_user_can( 'manage_network_plugins' ) )
+		if ( !current_user_can( $this->permission ) )
 			remove_all_actions( 'after_plugin_row' );
 		
 	} // END remove_plugin_update_row()
@@ -591,12 +604,24 @@ class WPC_PluginManager {
 	 * @see		switch_to_blog()
 	 * @see		activate_plugins()
 	 * @see		restore_current_blog()
+	 * @see		wp_is_large_network()
 	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
  	 */
 	public function mass_activate( $plugin ) {
+		
+		if ( wp_is_large_network() ) { ?>
+			
+			<div class="error">
+				<p><?php _e('Failed to mass activate: Your multisite network is too large for this function.', 'pm'); ?></p>
+			</div>
+			<?php
+			
+			return false;
+			
+		}
 		
 		global $wpdb;
 		
@@ -638,12 +663,24 @@ class WPC_PluginManager {
 	 * @see		switch_to_blog()
 	 * @see		deactivate_plugins()
 	 * @see		restore_current_blog()
+	 * @see		wp_is_large_network()
 	 *
 	 * @global	object	$wpdb
 	 * @param	string	$plugin
 	 * @return	string
  	 */
 	function mass_deactivate( $plugin ) {
+		
+		if ( wp_is_large_network() ) { ?>
+			
+			<div class="error">
+				<p><?php _e('Failed to mass activate: Your multisite network is too large for this function.', 'pm'); ?></p>
+			</div>
+			<?php
+			
+			return false;
+			
+		}
 		
 		global $wpdb;
 		
@@ -689,7 +726,7 @@ class WPC_PluginManager {
  	 */
 	function remove_plugins( $all_plugins ) {
 		
-		if ( current_user_can( 'manage_network_plugins' ) ) { //don't filter siteadmin
+		if ( current_user_can( $this->permission ) ) { //don't filter siteadmin
 			return $all_plugins;
 		}
 
@@ -735,13 +772,13 @@ class WPC_PluginManager {
 		
 //		global $psts, $blog_id;
 
-		if ( current_user_can( 'manage_network_plugins' ) ) {
+		if ( current_user_can( $this->permission ) ) {
 			return $action_links;
 		}
 
-		$auto_activate =		(array)get_site_option( 'pm_auto_activate_list' );
-		$user_control =			(array)get_site_option( 'pm_user_control_list' );
-		$override_plugins =		(array)get_option( 'pm_plugin_override_list' );
+		$auto_activate		= (array)get_site_option( 'pm_auto_activate_list' );
+		$user_control		= (array)get_site_option( 'pm_user_control_list' );
+		$override_plugins	= (array)get_option( 'pm_plugin_override_list' );
 
 		if ( $context != 'active' ) {
 			if ( in_array( $plugin_file, $user_control ) || in_array( $plugin_file, $auto_activate ) || in_array( $plugin_file, $override_plugins ) ) {
@@ -794,7 +831,7 @@ class WPC_PluginManager {
  	 */
 	function check_activated( $active_plugins ) {
 		
-		if ( current_user_can( 'manage_network_plugins' ) ) {
+		if ( current_user_can( $this->permission ) ) {
 			return $active_plugins;
 		}
 
