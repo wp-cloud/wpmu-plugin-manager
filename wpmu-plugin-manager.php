@@ -125,15 +125,15 @@ class WPC_PluginManager {
 		
 		add_submenu_page(
 			'plugins.php',
-			__( 'Plugin Management', 'wpmu-plugin-manager' ),
+			__( 'Manage Plugins', 'wpmu-plugin-manager' ),
 			__( 'Manage', 'wpmu-plugin-manager' ),
 			$this->permission,
-			'plugin-management',
+			'manage',
 			array( $this, 'admin_page' )
 		);
 		
-		add_action( 'load-plugins_page_plugin-management', array( $this, 'help_tabs' ) );
-		
+		add_action( 'load-plugins_page_manage', array( $this, 'help_tabs' ) );
+
 	} // END network_admin_menu()
 
 	/**
@@ -143,7 +143,7 @@ class WPC_PluginManager {
 	 * @access	public
 	 *
 	 * @see		get_current_screen()
-	 * @action	load-plugins_page_plugin-management
+	 * @action	load-plugins_page_manage
 	 *
 	 * @return	string
  	 */
@@ -211,27 +211,14 @@ class WPC_PluginManager {
 
 		$this->process_form();
 		?>
-		<div class='wrap'>
-		<style type="text/css">
-			table#plugin-manager {
-				margin-top: 6px;
-			}
-			.widefat tr:hover td {
-				background-color: #DDD;
-			}
-		</style>
-			<h2><?php _e( 'Plugin Management', 'wpmu-plugin-manager' ); ?></h2>
-
-			<?php if ( isset( $_GET['saved'] ) ) { ?>
-				<div id="message" class="updated fade">
-					<p>
-						<?php _e( 'Settings Saved', 'wpmu-plugin-manager' ); ?>
-					</p>
-				</div>
+		<div class="wrap">
+			<h1 class="wp-heading-inline"><?php _e( 'Plugin Management', 'wpmu-plugin-manager' ); ?></h1>
+			<hr class="wp-header-end">
+			<?php if ( isset( $_GET['updated'] ) ) { ?>
+			<div id="message" class="updated notice is-dismissible"><p><?php _e( 'Settings saved.' ); ?></p></div>
 			<?php } ?>
-
-			<form action="plugins.php?page=plugin-management&saved=1" method="post">
-				<table class="widefat" id="plugin-manager">
+			<form action="plugins.php?page=manage&updated=true" method="post">
+				<table class="wp-list-table widefat plugins" id="plugin-manager">
 					<thead>
 						<tr>
 							<th>
