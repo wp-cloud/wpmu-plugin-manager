@@ -591,7 +591,7 @@ class WPC_PluginManager {
 
 		$auto_activate = (array)get_site_option( 'pm_auto_activate_list' );
 		
-		if ( count( $auto_activate ) ) {
+        if ( count( $auto_activate ) && $auto_activate[0] != 'EMPTY' ) {
 			
 			switch_to_blog( $blog_id );
 			activate_plugins( $auto_activate, '', false ); //silently activate any plugins
