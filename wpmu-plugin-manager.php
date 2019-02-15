@@ -37,19 +37,14 @@ Network: true
  * @version   1.1-beta
  */
 
-//avoid direct calls to this file
-if ( !defined( 'ABSPATH' ) ) {
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit();
-}
+namespace WPCloud;
 
 /**
  * Main class to run the plugin
  * 
  * @since	1.0.0
  */
-class WPC_PluginManager {
+class Plugin_Manager {
 
 	/**
 	 * Current version of the plugin.
@@ -106,6 +101,8 @@ class WPC_PluginManager {
 
 		add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 4 );
 		// add_filter( 'active_plugins', array( $this, 'check_activated' ) );
+
+		add_filter( 'wp_stream_connectors', array( $this, 'stream_connector' ) );
 
 	} // END __construct()
 
@@ -886,7 +883,39 @@ class WPC_PluginManager {
 	    return apply_filters( 'wpc_pm_mass_process_status', $can );
 	}
 
-} // END class WPC_PluginManager
+	/**
+     * Register the My Plugin connector for Stream
+     *
+     * @filter wp_stream_connectors
+     *
+     * @param array $classes  Array of connector class names
+     *
+     * @return array
+     */
+    public function stream_connector( $classes ) {
+        require plugin_dir_path( __FILE__ ) . '/inc/class-connector-plugin-manager.php';
+
+        $class_name = '\WPCloud\Plugin_Manager\Connector_Plugin_Manager';
+
+        if ( ! class_exists( $class_name ) ) {
+            return;
+        }
+
+        $stream = wp_stream_get_instance();
+        $class = new $class_name( $stream->log );
+
+        if ( ! method_exists( $class, 'is_dependency_satisfied' ) ) {
+            return;
+        }
+
+//        if ( $class->is_dependency_satisfied() ) {
+            $classes[] = $class;
+//        }
+
+        return $classes;
+    }
+
+} // END class PluginManager
 
 /**
  * Instantiate the main class
@@ -896,4 +925,4 @@ class WPC_PluginManager {
  *
  * @var	object	$wpc_pm holds the instantiated class {@uses WPC_PluginManager}
  */
-$wpc_pm = new WPC_PluginManager();
+$wpc_pm = new \WPCloud\Plugin_Manager();
