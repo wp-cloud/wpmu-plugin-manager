@@ -406,6 +406,11 @@ class WPC_PluginManager {
 	 * @return	void
  	 */
 	function process_form() {
+
+	    if ( isset( $_GET['mass_activate'] ) ) {
+			$plugin = $_GET['mass_activate'];
+			$this->mass_activate($plugin);
+		}
 		
 		if ( isset( $_GET['mass_deactivate'] ) ) {
 			$plugin = $_GET['mass_deactivate'];
