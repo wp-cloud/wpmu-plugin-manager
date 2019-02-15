@@ -65,6 +65,7 @@ To prevent inconsistencies in your plugin configuration this process is blocked.
 = 1.1 (2019-02-dd) =
  * FIXED WP-CLI problem
  * ADD safety block for large networks
+ * ADD Stream connector
 
 = 1.0 =
 * __Forked from [Multisite Plugin Manager](http://wordpress.org/plugins/multisite-plugin-manager/) by [UglyRobot Web Development](http://uglyrobot.com)
