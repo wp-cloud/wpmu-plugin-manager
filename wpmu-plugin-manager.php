@@ -221,24 +221,20 @@ class WPC_PluginManager {
 				<table class="wp-list-table widefat plugins" id="plugin-manager">
 					<thead>
 						<tr>
-							<th>
-								<?php _e( 'Name', 'wpmu-plugin-manager' ); ?>
-							</th>
-							<th>
-								<?php _e( 'Version', 'wpmu-plugin-manager' ); ?>
-							</th>
-							<th>
-								<?php _e( 'Author', 'wpmu-plugin-manager' ); ?>
-							</th>
+							<th><?php _e( 'Name', 'wpmu-plugin-manager' ); ?></th>
+							<th><?php _e( 'Version', 'wpmu-plugin-manager' ); ?></th>
+							<th><?php _e( 'Author', 'wpmu-plugin-manager' ); ?></th>
 							<th title="<?php _e( 'Users may activate/deactivate', 'wpmu-plugin-manager' ); ?>">
 								<?php _e( 'User Control', 'wpmu-plugin-manager' ); ?>
 							</th>
+                            <?php if ( $this->can_mass_process() ) { ?>
 							<th>
 								<?php _e( 'Mass Activate', 'wpmu-plugin-manager' ); ?>
 							</th>
 							<th>
 								<?php _e( 'Mass Deactivate', 'wpmu-plugin-manager' ); ?>
 							</th>
+							<?php } ?>
 						</tr>
 					</thead>
 					<tfoot>
@@ -255,12 +251,14 @@ class WPC_PluginManager {
 							<th title="<?php _e( 'Users may activate/deactivate', 'wpmu-plugin-manager' ); ?>">
 								<?php _e( 'User Control', 'wpmu-plugin-manager' ); ?>
 							</th>
+							<?php if ( $this->can_mass_process() ) { ?>
 							<th>
 								<?php _e( 'Mass Activate', 'wpmu-plugin-manager' ); ?>
 							</th>
 							<th>
 								<?php _e( 'Mass Deactivate', 'wpmu-plugin-manager' ); ?>
 							</th>
+							<?php } ?>
 						</tr>
 					</tfoot>
 					<?php
@@ -878,6 +876,15 @@ class WPC_PluginManager {
 		);
 		
 	} // END load_plugin_textdomain()
+
+	private function can_mass_process() {
+	    if ( wp_is_large_network() ) {
+	        $can = false;
+	    } else {
+	        $can = true;
+	    }
+	    return apply_filters( 'wpc_pm_mass_process_status', $can );
+	}
 
 } // END class WPC_PluginManager
 
