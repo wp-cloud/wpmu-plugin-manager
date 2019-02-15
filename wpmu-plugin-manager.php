@@ -670,7 +670,7 @@ class WPC_PluginManager {
 		if ( wp_is_large_network() ) { ?>
 			
 			<div class="error">
-				<p><?php _e('Failed to mass activate: Your multisite network is too large for this function.', 'pm'); ?></p>
+				<p><?php _e('Failed to mass activate: Your multisite network is too large for this function.', 'wpmu-plugin-mnanager' ); ?></p>
 			</div>
 			<?php
 			
