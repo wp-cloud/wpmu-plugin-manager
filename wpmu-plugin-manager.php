@@ -15,7 +15,7 @@ Network: true
 	WPMU Plugin Manager
 	based on/forked from Multisite Plugin Manager by UglyRobot Web Development (http://uglyrobot.com)
 
-	Copyright (C) 2013-2014 WP-Cloud (http://dev.wp-cloud.org)
+	Copyright (C) 2013-2019 WP-Cloud (http://dev.wp-cloud.org)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License, version 2, as
@@ -30,11 +30,11 @@ Network: true
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author		WP-Cloud <code@wp-cloud.org>
- * @copyright	Copyright (c) 2013-2014, WP-Cloud
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- * @package		WPC\PluginManager
- * @version		1.1-beta
+ * @author    WP-Cloud <code@wp-cloud.org>
+ * @copyright Copyright (c) 2013-2019, WP-Cloud
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package   WPC\PluginManager
+ * @version   1.1-beta
  */
 
 //avoid direct calls to this file
@@ -84,7 +84,7 @@ class WPC_PluginManager {
 	 */
 	public function __construct() {
 		
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 		
@@ -92,18 +92,20 @@ class WPC_PluginManager {
 		
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'network_admin_menu', array( $this, 'network_admin_menu' ) );
+
 		add_action( 'wpmu_new_blog', array( $this, 'new_blog' ), 50 );
 		add_action( 'wpmueditblogaction', array( $this, 'blog_options_form' ) );
 		add_action( 'wpmu_update_blog_options', array( $this, 'blog_options_form_process' ) );
+
 		add_action( 'admin_init', array( $this, 'remove_plugin_update_row' ) );
 		
 		add_filter( 'plugin_row_meta' , array( $this, 'remove_plugin_meta' ), 10, 2 );
 		add_filter( 'all_plugins', array( $this, 'remove_plugins' ) );
 		add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 4 );
 		// add_filter( 'active_plugins', array( $this, 'check_activated' ) );
-		
+
 	} // END __construct()
-	
+
 	/**
 	 * Add admin menu item
 	 *
@@ -130,7 +132,7 @@ class WPC_PluginManager {
 		add_action( 'load-plugins_page_plugin-management', array( $this, 'help_tabs' ) );
 		
 	} // END network_admin_menu()
-	
+
 	/**
 	 * @todo
 	 *
@@ -170,12 +172,10 @@ class WPC_PluginManager {
 			<strong><?php _e( 'Auto Activation', 'wpmu-plugin-manager' ); ?></strong>
 			- <?php _e( 'When auto activation is on for a plugin, newly created blogs will have that plugin activated automatically. This does not affect existing blogs.', 'wpmu-plugin-manager' ); ?>
 		</p>
-
 		<p>
 			<strong><?php _e( 'User Control', 'wpmu-plugin-manager' ); ?></strong>
 			- <?php _e( 'When user control is enabled for a plugin, all users will be able to activate/deactivate the plugin through the <cite>Plugins</cite> menu. When you turn it off, users that have the plugin activated are grandfathered in, and will continue to have access until they deactivate it.', 'wpmu-plugin-manager' ); ?>
 		</p>
-
 		<p>
 			<strong><?php _e( 'Mass Activation/Deactivation', 'wpmu-plugin-manager' ); ?></strong>
 			- <?php _e( 'Mass activate and Mass deactivate buttons activate/deactivates the specified plugin for all blogs. This is different than the "Network Activate" option on the network plugins page, as users can later disable it and this only affects existing blogs. It also ignores the User Control option.', 'wpmu-plugin-manager' ); ?></p>
@@ -202,7 +202,7 @@ class WPC_PluginManager {
  	 */
 	public function admin_page() {
 		
-		if ( !current_user_can( $this->permission ) ) {
+		if ( ! current_user_can( $this->permission ) ) {
 			die( 'Nice Try!' );
 		}
 
@@ -385,9 +385,10 @@ class WPC_PluginManager {
  	 */
 	function remove_plugin_update_row() {
 		
-		if ( !current_user_can( $this->permission ) )
+		if ( !current_user_can( $this->permission ) ) {
 			remove_all_actions( 'after_plugin_row' );
-		
+		}
+
 	} // END remove_plugin_update_row()
 	
 	/**
@@ -430,11 +431,11 @@ class WPC_PluginManager {
 			update_site_option( 'pm_auto_activate_list', array_unique( $auto_activate ) );
 
 			//can't save blank value via update_site_option
-			if ( !$user_control ) {
+			if ( ! $user_control ) {
 				update_site_option( 'pm_user_control_list', 'EMPTY' );
 			}
 
-			if ( !$auto_activate ) {
+			if ( ! $auto_activate ) {
 				update_site_option( 'pm_auto_activate_list', 'EMPTY' );
 			}
 
