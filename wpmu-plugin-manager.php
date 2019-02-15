@@ -630,7 +630,7 @@ class WPC_PluginManager {
 				activate_plugin( $plugin ); //silently activate the plugin
 				restore_current_blog();
 			} ?>
-			<div id="message" class="updated fade">
+			<div id="message" class="updated notice is-dismissible">
 				<p>
 					<?php printf( __( '%s has been MASS ACTIVATED.', 'wpmu-plugin-manager' ), '<span style="color:#FF3300;">' . esc_html( $plugin ) . '</span>'); ?>
 				</p>
@@ -689,7 +689,7 @@ class WPC_PluginManager {
 				deactivate_plugins( $plugin, true ); //silently deactivate the plugin
 				restore_current_blog();
 			} ?>
-			<div id="message" class="updated fade">
+			<div id="message" class="updated notice is-dismissible">
 				<p>
 					<?php printf( __( '%s has been MASS DEACTIVATED.', 'wpmu-plugin-manager' ), '<span style="color:#FF3300;">' . esc_html( $plugin ) . '</span>'); ?>
 				</p>
