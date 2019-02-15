@@ -315,12 +315,14 @@ class WPC_PluginManager {
 								echo $opts.'</select>';
 								?>
 							</td>
+							<?php if ( $this->can_mass_process() ) { ?>
 							<td>
-								<?php echo "<a href='plugins.php?page=plugin-management&mass_activate=$file'>" . __( 'Activate All', 'wpmu-plugin-manager' ) . "</a>" ?>
+								<?php echo "<a href='plugins.php?page=manage&mass_activate=$file'>" . __( 'Activate All', 'wpmu-plugin-manager' ) . "</a>" ?>
 							</td>
 							<td>
-								<?php echo "<a href='plugins.php?page=plugin-management&mass_deactivate=$file'>" . __( 'Deactivate All', 'wpmu-plugin-manager' ) . "</a>" ?>
+								<?php echo "<a href='plugins.php?page=manage&mass_deactivate=$file'>" . __( 'Deactivate All', 'wpmu-plugin-manager' ) . "</a>" ?>
 							</td>
+							<?php } ?>
 						</tr>
 					</tbody>
 				<?php } ?>
@@ -464,7 +466,7 @@ class WPC_PluginManager {
 		</table>
 		<h3><?php _e( 'Plugin Override Options', 'wpmu-plugin-manager' ) ?></h3>
 		<p style="padding:5px 10px 0 10px;margin:0;">
-			<?php printf( __( 'Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings.', 'wpmu-plugin-manager' ), '<a href="plugins.php?page=plugin-management">', '</a>' ); ?>
+			<?php printf( __( 'Checked plugins here will be accessible to this site, overriding the sitewide %sPlugin Management%s settings. Uncheck to return to sitewide settings.', 'wpmu-plugin-manager' ), '<a href="plugins.php?page=manage">', '</a>' ); ?>
 		</p>
 		<table class="widefat" style="margin:10px;width:95%;">
 		<thead>
