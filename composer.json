@@ -1,0 +1,30 @@
+{
+  "name": "wp-cloud/wpmu-plugin-manager",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "description": "Manage plugin access permissions across your entire multisite network.",
+  "homepage": "https://github.com/wp-cloud/wpmu-plugin-manager",
+  "authors": [
+    {
+      "name": "WP-Cloud.de",
+      "email": "info@wp-cloud.de",
+      "homepage": "https://wp-cloud.de/"
+    },
+    {
+      "name": "Christian Foellmann",
+      "email": "foellmann@foe-services.de",
+      "homepage": "http://christian.foellmann.de/"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "plugins",
+    "multisite"
+  ],
+  "support": {
+    "issues": "https://github.com/wp-cloud/wpmu-plugin-manager/issues"
+  },
+  "require": {
+    "composer/installers": "~1.0"
+  }
+}
